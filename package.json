@@ -1,1 +1,8 @@
-{}
+{
+    "scripts": {
+        "start": "node scripts/start.js"
+    },
+    "devDependencies": {
+        "open": "0.0.5"
+    }
+}
