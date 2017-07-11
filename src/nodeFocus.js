@@ -16,6 +16,7 @@ $(document).ready(function () {
     });
 
     $(document).bind('keydown', 'Ctrl+up', function () {
+        if (window.currentNode === document.body) return false;
         focusNode($(window.currentNode).prev()[0] || window.currentNode);
         return false;
     });
@@ -24,6 +25,7 @@ $(document).ready(function () {
         return false;
     });
     $(document).bind('keydown', 'Ctrl+left', function () {
+        if (window.currentNode === document.body) return false;
         focusNode($(window.currentNode).parent()[0] || window.currentNode);
         return false;
     });
