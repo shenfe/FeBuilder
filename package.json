@@ -4,5 +4,9 @@
     },
     "devDependencies": {
         "open": "0.0.5"
+    },
+    "dependencies": {
+        "antd": "^2.13.1",
+        "interactjs": "^1.2.9"
     }
 }
