@@ -3,7 +3,8 @@
         "start": "node scripts/start.js"
     },
     "devDependencies": {
-        "open": "0.0.5"
+        "open": "0.0.5",
+        "webpack": "^3.5.6"
     },
     "dependencies": {
         "antd": "^2.13.1",
