@@ -15,9 +15,19 @@ body {
 }
 
 #header {
-    height: 24px;
+    height: 36px;
     width: 100%;
     background: #108ee9;
+    line-height: 36px;
+    .op-item {
+        color: #eee;
+        margin-left: 4px;
+        cursor: pointer;
+    }
+    .op-item:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
 }
 
 #notice {
