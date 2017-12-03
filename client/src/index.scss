@@ -1,0 +1,63 @@
+html,
+body {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    height: 24px;
+    width: 100%;
+    background: #108ee9;
+}
+
+#notice {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+#main {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+#main > div {
+    box-sizing: border-box;
+}
+
+#main > div:not(:last-child) {
+    border-right: 1px #108ee9 solid;
+}
+
+#resource {
+    flex: 1;
+}
+
+#treeview {
+    flex: 2;
+}
+
+#preview {
+    width: 50%;
+}
+
+#setting {
+    flex: 1;
+}
+
+#status {
+    height: 24px;
+    width: 100%;
+    background: #108ee9;
+}
