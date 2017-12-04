@@ -5,6 +5,8 @@ const app = new Koa();
 const router = new Router();
 const cors = require('@koa/cors');
 
+const session = require('koa-session2');
+
 router.post('/open', async function (ctx, next) {
     ctx.response.header['Access-Control-Allow-Origin'] = ctx.request.origin;
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
