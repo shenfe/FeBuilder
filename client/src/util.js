@@ -23,7 +23,23 @@ const cast = (src, ...dest) => {
     return src;
 };
 
+const querify = obj => {
+    if (obj == null) return '';
+    if (type(obj) === 'array') return encodeURIComponent(JSON.stringify(obj));
+    if (type(obj) !== 'object') return encodeURIComponent(String(obj));
+    let encoded = [];
+    for (let prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            encoded.push(encodeURIComponent(prop) + '=' +
+                encodeURIComponent(!(obj[prop] instanceof Object) ? String(obj[prop]) : JSON.stringify(obj[prop]))
+            );
+        }
+    }
+    return encoded.join('&');
+};
+
 module.exports = {
     type,
-    cast
+    cast,
+    querify
 };

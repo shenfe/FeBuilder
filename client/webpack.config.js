@@ -2,6 +2,11 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const env = process.env.NODE_ENV;
+console.log('env', env);
+
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     entry: './index.js',
@@ -29,11 +34,13 @@ module.exports = {
             },
             {
                 test: /\.(css|scss)$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader'
-                ]
+                use: (env !== 'production') ? ['style-loader', 'css-loader', 'sass-loader'] : ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        'sass-loader'
+                    ]
+                })
             },
             {
                 test: /\.(jpg|png|gif|woff|woff2)$/,
@@ -46,6 +53,7 @@ module.exports = {
         ]
     },
     plugins: [
+        ...((env === 'production') ? [new ExtractTextPlugin(`index.css`)] : []),
         new HtmlWebpackPlugin({
             template: 'index.html'
         })

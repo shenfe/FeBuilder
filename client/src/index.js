@@ -8,10 +8,20 @@ const auth = require('./auth');
 
 const { post } = require('./helper');
 
-post('test', {
-    user: 'world'
-})
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
+(function onSignIn() {
+    if (auth.signStatus()) {
+        // fetch user data
+    } else {
+        auth.signIn()
+            .then(onSignIn)
+            .catch(() => {
+                window.location.reload();
+            });
+    }
+})();
+
+$('#op-exit').click(function (e) {
+    auth.signOut().then(() => {
+        window.location.reload();
     });
+});
