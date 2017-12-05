@@ -60,31 +60,73 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-
-__webpack_require__(6);
-
-__webpack_require__(7);
-
-const auth = __webpack_require__(8);
-
-
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(8);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(3);
+
+__webpack_require__(0);
+
+__webpack_require__(10);
+
+const auth = __webpack_require__(11);
+
+const { post } = __webpack_require__(14);
+
+post('test', {
+    user: 'world'
+})
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+    });
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(2);
+var content = __webpack_require__(4);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -92,7 +134,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(6)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -109,10 +151,10 @@ if(false) {
 }
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(5)(undefined);
 // imports
 
 
@@ -123,7 +165,7 @@ exports.push([module.i, "html,\nbody {\n  margin: 0;\n  border: 0;\n  padding: 0
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /*
@@ -205,7 +247,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -261,7 +303,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(5);
+var	fixUrls = __webpack_require__(7);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -577,7 +619,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports) {
 
 
@@ -672,7 +714,14 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 6 */
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(9);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10932,14 +10981,14 @@ return jQuery;
 
 
 /***/ }),
-/* 7 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*globals jQuery, define, module, exports, require, window, document, postMessage */
 (function (factory) {
 	"use strict";
 	if (true) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(6)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -19363,17 +19412,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 }));
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const jscookie = __webpack_require__(9);
+const jscookie = __webpack_require__(12);
 
 const cookies = {
-    'userId': 'febuilder_userid',
-    'token': 'febuilder_token'
+    'userId': 'febuilder:userid',
+    'token': 'febuilder:token'
 };
 
-const api = __webpack_require__(10);
+const api = __webpack_require__(13);
 
 const signStatus = () => {
     let userId = jscookie.get(cookies.userId);
@@ -19400,7 +19449,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -19575,20 +19624,82 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports) {
 
-const host = '//127.0.0.1:3000';
+const port = 3000;
+const hostname = 'localhost';
+
+const host = `//${hostname}:${port}`;
 
 const apis = {
+    test: '/hello',
     signin: '/user/signin',
     signup: '/user/signup',
     backup: '/proj/backup'
 };
 
 module.exports = {
+    port,
+    hostname,
     host,
     apis
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const API = __webpack_require__(13);
+
+const util = __webpack_require__(15);
+
+const post = (apiName, data = {}, options = {}) =>
+    fetch(`${API.host}${API.apis[apiName]}`, util.cast({
+        method: 'post',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }, options));
+
+module.exports = {
+    post
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+const type = v => {
+    if (v === undefined) return 'undefined';
+    if (v === null) return 'null';
+    let t = Object.prototype.toString.call(v);
+    return t.substring('[object '.length, t.length - 1).toLowerCase();
+};
+
+const jsonClone = obj => JSON.parse(JSON.stringify(obj));
+
+const cast = (src, ...dest) => {
+    if (type(src) !== 'object') src = {};
+    dest.forEach(d => {
+        if (type(d) !== 'object') return;
+        for (let k in d) {
+            if (!d.hasOwnProperty(k)) continue;
+            if (!src.hasOwnProperty(k)) {
+                src[k] = jsonClone(d[k]);
+            } else {
+                src[k] = cast(src[k], d[k]);
+            }
+        }
+    });
+    return src;
+};
+
+module.exports = {
+    type,
+    cast
 };
 
 /***/ })

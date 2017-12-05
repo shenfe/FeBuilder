@@ -1,12 +1,18 @@
-const host = '//127.0.0.1:3000';
+const port = 3000;
+const hostname = 'localhost';
+
+const host = `//${hostname}:${port}`;
 
 const apis = {
+    test: '/hello',
     signin: '/user/signin',
     signup: '/user/signup',
     backup: '/proj/backup'
 };
 
 module.exports = {
+    port,
+    hostname,
     host,
     apis
 };

@@ -1,8 +1,8 @@
 const jscookie = require('js-cookie');
 
 const cookies = {
-    'userId': 'febuilder_userid',
-    'token': 'febuilder_token'
+    'userId': 'febuilder:userid',
+    'token': 'febuilder:token'
 };
 
 const api = require('./api');

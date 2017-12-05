@@ -38,6 +38,10 @@ module.exports = {
             {
                 test: /\.(jpg|png|gif|woff|woff2)$/,
                 use: ['url-loader']
+            },
+            {
+                test: /\.html$/,
+                use: 'raw-loader'
             }
         ]
     },
