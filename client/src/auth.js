@@ -15,6 +15,8 @@ const signStatus = () => {
 };
 
 const signOut = () => {
+    let ask = confirm('would you?');
+    if (!ask) return Promise.reject();
     return get('signout')
         .then(res => res.json())
         .then(data => {

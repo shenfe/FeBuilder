@@ -31,6 +31,9 @@ const cookies = {
     'token': 'febuilder:token'
 };
 
+/**
+ * Set browser cookies in the context object
+ */
 const setClientCookie = (ctx, obj) => {
     for (let p in obj) {
         if (!obj.hasOwnProperty(p)) continue;

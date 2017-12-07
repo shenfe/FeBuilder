@@ -15,7 +15,11 @@ module.exports = {
         filename: 'index.js'
     },
     resolve: {
-        alias: {}
+        alias: {
+            preset: path.resolve(__dirname, '../base/preset'),
+            view: path.resolve(__dirname, 'src/view'),
+            model: path.resolve(__dirname, 'src/model')
+        }
     },
     module: {
         rules: [
