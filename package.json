@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "fromform": "^0.1.0",
     "jquery": "^3.2.1",
     "js-cookie": "^2.2.0",
     "jstree": "^3.3.4",
@@ -20,7 +21,8 @@
     "md5": "^2.2.1",
     "open": "0.0.5",
     "pouchdb": "^6.3.4",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.7.8",
+    "ui-interface": "^0.1.1"
   },
   "devDependencies": {
     "cross-env": "^5.1.1",
