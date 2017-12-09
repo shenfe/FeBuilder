@@ -7,7 +7,8 @@ const apis = {
     test: '/hello',
     signin: '/user/signin',
     signout: '/user/signout',
-    backup: '/proj/backup'
+    backup: '/proj/backup',
+    assets: '/asset/list'
 };
 
 module.exports = {

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const util = require('./util');
 
 const Koa = require('koa');
 const Router = require('koa-router');
@@ -126,6 +127,19 @@ router.get(API.apis.signout, async function (ctx, next) {
     };
     await next();
 });
+
+/**
+ * API: assets
+ */
+router.get(API.apis.assets, async function (ctx, next) {
+    ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    ctx.status = 200;
+    ctx.body = {
+        data: util.readDir(path.resolve(__dirname, '../base/preset')),
+        msg: 'success'
+    };
+    await next();
+})
 
 app
     .use(session({

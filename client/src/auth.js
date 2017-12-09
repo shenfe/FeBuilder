@@ -18,7 +18,6 @@ const signOut = () => {
     let ask = confirm('would you?');
     if (!ask) return Promise.reject();
     return get('signout')
-        .then(res => res.json())
         .then(data => {
             console.log(data);
         })
@@ -38,7 +37,6 @@ const signIn = async () => {
         username,
         password
     })
-        .then(res => res.json())
         .then(data => {
             console.log(data);
         })
