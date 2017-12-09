@@ -19,9 +19,3 @@ const { post } = require('./helper');
             });
     }
 })();
-
-$('#op-exit').click(function (e) {
-    auth.signOut().then(() => {
-        window.location.reload();
-    });
-});

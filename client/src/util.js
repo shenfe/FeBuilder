@@ -38,8 +38,18 @@ const querify = obj => {
     return encoded.join('&');
 };
 
+const d = (el, selecter) => {
+    if (typeof el === 'string') {
+        selecter = el;
+        el = document;
+    }
+    if (selecter.split(' ').pop()[0] === '#') return el.querySelector(selecter);
+    return el.querySelectorAll(selecter);
+};
+
 module.exports = {
     type,
     cast,
-    querify
+    querify,
+    d
 };
