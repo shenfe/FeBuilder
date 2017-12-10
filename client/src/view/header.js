@@ -5,9 +5,11 @@ const editor = require('./editor');
 const init = function (el) {
     const $el = $(el);
     $el.find('#op-close').click(function (e) {
-        controller.close().then(() => {
-            window.location.reload();
-        });
+        controller.close()
+            .then(() => {
+                window.location.reload();
+            })
+            .catch(() => {});
     });
 
     $el.find('#op-open').click(function (e) {

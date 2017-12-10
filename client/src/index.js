@@ -13,8 +13,11 @@ const { get, post } = require('./helper');
 /* 项目获取 */
 (function projOpen() {
     if (controller.checkStatus()) {
-        /* 加载项目数据 */
+        /* 加载资源数据 */
         get('assets').then(data => console.log('assets', data));
+
+        /* 加载项目数据 */
+        controller.open(true).then(data => console.log('project', data));
     }
 })();
 

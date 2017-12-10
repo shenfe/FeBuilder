@@ -22,7 +22,7 @@ const checkStatus = () => {
 };
 
 const closeProj = () => {
-    let ask = confirm('would you?');
+    let ask = confirm('要离开项目吗？上次保存后的修改将被舍弃。');
     if (!ask) return Promise.reject();
     return get('close')
         .then(data => {
@@ -33,14 +33,32 @@ const closeProj = () => {
         });
 };
 
-const openProj = async () => {
-    let { projname, password } = await input([
-        { key: 'projname', name: '名称', desc: '[0-9a-zA-Z]{6,12}' },
-        { key: 'password', name: '密码', desc: '[0-9a-zA-Z]{6,12}' }
-    ]);
-    return post('open', { projname, password })
+const openProj = async (omitted) => {
+    let projname, password;
+    if (!omitted) {
+        try {
+            let inputs = await input([
+                { key: 'projname', name: '名称', desc: '[0-9a-zA-Z]{6,12}' },
+                { key: 'password', name: '密码', desc: '[0-9a-zA-Z]{6,12}' }
+            ]);
+            projname = inputs.projname;
+            password = inputs.password;
+        } catch (err) {
+            alert('输入不符合要求');
+            return;
+        }
+    }
+    return post('open', omitted ? undefined : { projname, password })
         .then(data => {
             console.log(data);
+            if (data.msg === 'success') {
+                if (!omitted) window.location.reload();
+                else {
+                    return data;
+                }
+            } else {
+                alert(`${data.msg}: ${data.desc}`);
+            }
         })
         .catch(err => {
             console.log(err);
@@ -48,14 +66,26 @@ const openProj = async () => {
 };
 
 const createProj = async () => {
-    let { projname, password } = await input([
-        { key: 'projname', name: '名称', desc: '[0-9a-zA-Z]{6,12}' },
-        { key: 'password', name: '密码', desc: '[0-9a-zA-Z]{6,12}' }
-    ]);
+    let projname, password;
+    try {
+        let inputs = await input([
+            { key: 'projname', name: '名称', desc: '[0-9a-zA-Z]{6,12}' },
+            { key: 'password', name: '密码', desc: '[0-9a-zA-Z]{6,12}' }
+        ]);
+        projname = inputs.projname;
+        password = inputs.password;
+    } catch (err) {
+        alert('输入不符合要求');
+        return;
+    }
     return post('create', { projname, password })
         .then(data => {
             console.log(data);
-            // window.location.reload();
+            if (data.msg === 'success') {
+                window.location.reload();
+            } else {
+                alert(`${data.msg}: ${data.desc}`);
+            }
         })
         .catch(err => {
             console.log(err);

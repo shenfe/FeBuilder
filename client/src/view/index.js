@@ -16,7 +16,7 @@ preview.init(d('#preview'));
 status.init(d('#status'));
 editor.init(d('#editor'));
 
-window.setTimeout(async function () {
-    let data = await editor.edit('test');
-    console.log(data);
-}, 2000);
+// window.setTimeout(async function () {
+//     let data = await editor.edit('test');
+//     console.log(data);
+// }, 2000);
