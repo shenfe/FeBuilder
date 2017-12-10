@@ -50,7 +50,6 @@ const openProj = async (omitted) => {
     }
     return post('open', omitted ? undefined : { projname, password })
         .then(data => {
-            console.log(data);
             if (data.msg === 'success') {
                 if (!omitted) window.location.reload();
                 else {
@@ -80,7 +79,6 @@ const createProj = async () => {
     }
     return post('create', { projname, password })
         .then(data => {
-            console.log(data);
             if (data.msg === 'success') {
                 window.location.reload();
             } else {
