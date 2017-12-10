@@ -14,6 +14,9 @@ const readData = absFilePath => {
 };
 
 const isEmpty = obj => {
+    if (typeof obj === 'string') return obj === '';
+    if (!obj) return true;
+    if (obj instanceof Array) return obj.length === 0;
     return !!Object.keys(obj).length;
 };
 

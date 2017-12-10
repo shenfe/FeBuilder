@@ -10,21 +10,24 @@
 <body>
     <div id="app">
         <div id="header">
-            <span id="op-exit" class="op-item">[exit]</span>
-            <span id="op-undo" class="op-item">[undo]</span>
-            <span id="op-redo" class="op-item">[redo]</span>
-            <span id="op-save" class="op-item">[save]</span>
+            <span id="op-close" class="op-item show-as-auth">[close]</span>
+            <span id="op-open" class="op-item">[open]</span>
+            <span id="op-create" class="op-item">[create]</span>
+            <span id="op-undo" class="op-item show-as-auth">[undo]</span>
+            <span id="op-redo" class="op-item show-as-auth">[redo]</span>
+            <span id="op-save" class="op-item show-as-auth">[save]</span>
         </div>
         <div id="notice"></div>
-        <div id="main">
+        <div id="main" class="show-as-auth">
             <div id="resource"></div>
             <div id="treeview"></div>
             <div id="setting"></div>
             <div id="preview"></div>
         </div>
-        <div id="status"></div>
-        <div id="editor"></div>
+        <div id="status" class="show-as-auth"></div>
+        <div id="editor"><div id="editor-inner"></div></div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 </body>
 
 </html>

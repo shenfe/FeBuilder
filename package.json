@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
-    "ace-builds": "^1.2.9",
     "fromform": "^0.1.0",
     "interactjs": "^1.2.9",
     "jquery": "^3.2.1",

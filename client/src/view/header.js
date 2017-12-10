@@ -1,10 +1,24 @@
-const auth = require('../auth');
+const controller = require('../controller');
 
-module.exports = function init(el) {
+const editor = require('./editor');
+
+const init = function (el) {
     const $el = $(el);
-    $el.find('#op-exit').click(function (e) {
-        auth.signOut().then(() => {
+    $el.find('#op-close').click(function (e) {
+        controller.close().then(() => {
             window.location.reload();
         });
     });
+
+    $el.find('#op-open').click(function (e) {
+        controller.open();
+    });
+
+    $el.find('#op-create').click(function (e) {
+        controller.create();
+    });
+};
+
+module.exports = {
+    init
 };

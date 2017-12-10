@@ -6,20 +6,15 @@ require('jstree');
 
 const interact = require('interactjs');
 
-const auth = require('./auth');
+const controller = require('./controller');
 
 const { get, post } = require('./helper');
 
-(function onSignIn() {
-    if (auth.signStatus()) {
-        /* fetch user data */
-        get('assets').then(data => console.log(data));
-    } else {
-        auth.signIn()
-            .then(onSignIn)
-            .catch(() => {
-                window.location.reload();
-            });
+/* 项目获取 */
+(function projOpen() {
+    if (controller.checkStatus()) {
+        /* 加载项目数据 */
+        get('assets').then(data => console.log('assets', data));
     }
 })();
 

@@ -1,3 +1,7 @@
-module.exports = function init(el) {
+const init = function (el) {
     
+};
+
+module.exports = {
+    init
 };

@@ -19,16 +19,22 @@ const { validation } = require('../client/src/const');
 
 const PouchDB = require('pouchdb');
 
-const dbUserAuth = new PouchDB('db/user_auth');
-const dbUserInfo = new PouchDB('db/user_info');
-const dbUserData = new PouchDB('db/user_data');
+const dbProjAuth = new PouchDB('db/proj_auth');
+const dbProjInfo = new PouchDB('db/proj_info');
+const dbProjData = new PouchDB('db/proj_data');
+
+dbProjAuth.createIndex({
+    index: {
+        fields: ['projname']
+    }
+});
 
 const API = require('../client/src/api');
 
 app.keys = ['some secret for febuilder server'];
 
 const cookies = {
-    'userid': 'febuilder:userid',
+    'projid': 'febuilder:projid',
     'token': 'febuilder:token'
 };
 
@@ -61,60 +67,57 @@ router.post(API.apis.test, async function (ctx, next) {
 });
 
 /**
- * API: sign-in
+ * API: open a project
  */
-router.post(API.apis.signin, async function (ctx, next) {
+router.post(API.apis.open, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     let data = ctx.request.body;
-    if (!validation.username(data.username) || !validation.password(data.password)) {
+    if (!validation.projname(data.projname) || !validation.password(data.password)) {
         ctx.status = 200;
         ctx.body = {
-            msg: 'wrong'
+            msg: 'wrong',
+            desc: 'Name or password of the project is invalid.'
         };
         return await next();
     }
-    let username = data.username;
-    await dbUserAuth.get(username)
-        .then(({ password }) => {
+    let projname = data.projname;
+    await dbProjAuth.find({
+        name: projname,
+        password: data.password
+    })
+        .then(res => {
+            console.log(res);
             ctx.status = 200;
-            if (password === data.password) {
+            if (res.docs.length) {
                 setClientCookie(ctx, {
-                    userid: username,
-                    token: md5(username)
+                    projid: projname,
+                    token: md5(projname)
                 });
                 ctx.body = {
                     msg: 'success'
                 };
             } else {
                 ctx.body = {
-                    msg: 'failure'
+                    msg: 'failure',
+                    desc: 'Project name or password is wrong.'
                 };
             }
         })
         .catch(err => {
-            return dbUserAuth.post(data).then(res => {
-                setClientCookie(ctx, {
-                    userid: username,
-                    token: md5(username)
-                });
-                ctx.status = 200;
-                ctx.body = {
-                    msg: 'success'
-                };
-            }).catch(err => {
-                ctx.status = 500;
-                ctx.body = {
-                    msg: 'error'
-                };
-            });
+            console.log(err);
+            ctx.status = 200;
+            ctx.body = {
+                msg: 'error',
+                desc: 'Fail to open the project. Maybe it doesn\'t exist.'
+            };
         });
     await next();
 });
 
 /**
- * API: sign-out
+ * API: close the project
  */
-router.get(API.apis.signout, async function (ctx, next) {
+router.get(API.apis.close, async function (ctx, next) {
     for (let p in cookies) {
         ctx.cookies.set(cookies[p], '', {
             httpOnly: false
@@ -125,6 +128,60 @@ router.get(API.apis.signout, async function (ctx, next) {
     ctx.body = {
         msg: 'success'
     };
+    await next();
+});
+
+/**
+ * API: create a project
+ */
+router.post(API.apis.create, async function (ctx, next) {
+    ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    let data = ctx.request.body;
+    if (!validation.projname(data.projname) || !validation.password(data.password)) {
+        ctx.status = 200;
+        ctx.body = {
+            msg: 'wrong',
+            desc: 'Name or password of the project is invalid.'
+        };
+        return await next();
+    }
+    let projname = data.projname;
+    await dbProjAuth.find({
+            name: projname
+        })
+        .then(res => {
+            console.log(res);
+            ctx.status = 500;
+            ctx.body = {
+                msg: 'failure',
+                desc: 'Project already exists.'
+            };
+        })
+        .catch(err => {
+            console.log(err);
+            return dbProjAuth.post({
+                name: projname,
+                password: data.password
+            }).then(res => {
+                console.log(res);
+                setClientCookie(ctx, {
+                    projid: projname,
+                    token: md5(projname)
+                });
+                ctx.status = 200;
+                ctx.body = {
+                    msg: 'success',
+                    desc: 'Create the project successfully.'
+                };
+            }).catch(err => {
+                console.log(err);
+                ctx.status = 500;
+                ctx.body = {
+                    msg: 'error',
+                    desc: 'Fail to create the project.'
+                };
+            });
+        });
     await next();
 });
 

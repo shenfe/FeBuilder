@@ -5,9 +5,10 @@ const host = `//${hostname}:${port}`;
 
 const apis = {
     test: '/hello',
-    signin: '/user/signin',
-    signout: '/user/signout',
-    backup: '/proj/backup',
+    open: '/proj/open',
+    close: '/proj/close',
+    save: '/proj/save',
+    create: '/proj/create',
     assets: '/asset/list'
 };
 
