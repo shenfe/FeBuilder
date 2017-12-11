@@ -10,18 +10,27 @@ const controller = require('./controller');
 
 const { get, post } = require('./helper');
 
+require('./view/index');
+
+const vResource = require('./view/resource');
+
 /* 项目获取 */
 (function projOpen() {
     if (controller.checkStatus()) {
         /* 加载资源数据 */
-        get('assets').then(data => console.log('assets', data));
+        get('components').then(data => {
+            console.log('components', data);
+            vResource.renderComponents(data.data);
+        });
+        get('fileassets').then(data => {
+            console.log('fileassets', data);
+            vResource.renderFileAssets(data.data);
+        });
 
         /* 加载项目数据 */
         controller.open(true).then(data => console.log('project', data));
     }
 })();
-
-require('./view/index');
 
 /* 面板尺寸控制 */
 (function () {

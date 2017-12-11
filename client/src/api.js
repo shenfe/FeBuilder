@@ -9,7 +9,9 @@ const apis = {
     close: '/proj/close',
     save: '/proj/save',
     create: '/proj/create',
-    assets: '/asset/list'
+    components: '/asset/component',
+    fileassets: '/asset/file',
+    upload: '/upload'
 };
 
 module.exports = {

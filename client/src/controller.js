@@ -90,9 +90,28 @@ const createProj = async () => {
         });
 };
 
+const uploadFile = async (file, options) => {
+    return post('upload', { file, options }, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+        .then(data => {
+            if (data.msg === 'success') {
+                window.location.reload();
+            } else {
+                alert(`${data.msg}: ${data.desc}`);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 module.exports = {
     checkStatus,
     close: closeProj,
     open: openProj,
-    create: createProj
+    create: createProj,
+    upload: uploadFile
 };

@@ -16,6 +16,7 @@
     "jstree": "^3.3.4",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
+    "koa-multer": "^1.0.2",
     "koa-router": "^7.3.0",
     "koa-session": "^5.5.1",
     "koa-static": "^4.0.2",

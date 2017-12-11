@@ -9,6 +9,24 @@ const app = new Koa();
 const cors = require('@koa/cors');
 const router = new Router();
 
+const multer = require('koa-multer');
+
+const uploadDir = '../uploads';
+
+const uploadStorage = multer.diskStorage({
+    // 文件保存路径
+    destination: function (req, file, cb) {
+        console.log(req);
+        cb(null, `${uploadDir}/`);
+    },
+    // 修改文件名称
+    filename: function (req, file, cb) {
+        let fileFormat = (file.originalname).split('.');
+        cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1]);
+    }
+});
+const upload = multer({ storage: uploadStorage });
+
 const serve = require('koa-static');
 
 const session = require('koa-session');
@@ -65,6 +83,15 @@ router.post(API.apis.test, async function (ctx, next) {
         hello: data.user
     };
     await next();
+});
+
+/**
+ * API: upload
+ */
+router.post(API.apis.upload, upload.single('file'), async (ctx, next) => {
+    ctx.body = {
+        filename: ctx.req.file.filename // 返回文件名
+    };
 });
 
 /**
@@ -208,9 +235,9 @@ router.post(API.apis.create, async function (ctx, next) {
 });
 
 /**
- * API: assets
+ * API: components
  */
-router.get(API.apis.assets, async function (ctx, next) {
+router.get(API.apis.components, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     ctx.status = 200;
     ctx.body = {
@@ -218,7 +245,20 @@ router.get(API.apis.assets, async function (ctx, next) {
         msg: 'success'
     };
     await next();
-})
+});
+
+/**
+ * API: file assets
+ */
+router.get(API.apis.fileassets, async function (ctx, next) {
+    ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    ctx.status = 200;
+    ctx.body = {
+        data: util.readDir(path.resolve(__dirname, `${uploadDir}`)),
+        msg: 'success'
+    };
+    await next();
+});
 
 app
     .use(session({
