@@ -13,6 +13,7 @@ const { get, post } = require('./helper');
 require('./view/index');
 
 const vResource = require('./view/resource');
+const vTreeview = require('./view/treeview');
 
 /* 项目获取 */
 (function projOpen() {
@@ -28,7 +29,10 @@ const vResource = require('./view/resource');
         });
 
         /* 加载项目数据 */
-        controller.open(true).then(data => console.log('project', data));
+        controller.open(true).then(data => {
+            console.log('project', data);
+            vTreeview.render(data.data.content);
+        });
     }
 })();
 

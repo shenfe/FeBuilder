@@ -235,6 +235,46 @@ router.post(API.apis.create, async function (ctx, next) {
 });
 
 /**
+ * API: save the project
+ */
+router.post(API.apis.save, async function (ctx, next) {
+    ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    let data = ctx.request.body;
+    console.log('save project with data: ', data);
+
+    let projname = ctx.cookies.get(cookies.projid);
+    if (!projname) {
+        ctx.status = 500;
+        ctx.body = {
+            msg: 'error',
+            desc: 'Unknown project.'
+        };
+        return await next();
+    }
+
+    await dbProjAuth.post({
+        name: projname,
+        content: data.content
+    }).then(res => {
+        console.log(res);
+        ctx.status = 200;
+        ctx.body = {
+            msg: 'success',
+            desc: 'Save the project successfully.'
+        };
+    }).catch(err => {
+        console.log(err);
+        ctx.status = 500;
+        ctx.body = {
+            msg: 'error',
+            desc: 'Fail to save the project.'
+        };
+    });
+
+    await next();
+});
+
+/**
  * API: components
  */
 router.get(API.apis.components, async function (ctx, next) {

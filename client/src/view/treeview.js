@@ -26,7 +26,12 @@ const render = data => {
     });
 };
 
+const json = () => {
+    return $('#treeview').jstree('get_json');
+};
+
 module.exports = {
     init,
-    render
+    render,
+    json
 };

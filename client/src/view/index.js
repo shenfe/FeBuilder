@@ -1,9 +1,11 @@
+require('../common/flex-panel');
+
 const header = require('./header');
 const resource = require('./resource');
 const treeview = require('./treeview');
 const setting = require('./setting');
 const preview = require('./preview');
-const status = require('./status');
+// const status = require('./status');
 const editor = require('./editor');
 
 const { d } = require('../util');
@@ -13,7 +15,7 @@ resource.init(d('#resource'));
 treeview.init(d('#treeview'));
 setting.init(d('#setting'));
 preview.init(d('#preview'));
-status.init(d('#status'));
+// status.init(d('#status'));
 editor.init(d('#editor'));
 
 // window.setTimeout(async function () {

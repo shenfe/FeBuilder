@@ -24,7 +24,7 @@ const renderComponents = data => {
 
 const renderFileAssets = data => {
     $(function () {
-        $('#fileAssets').jstree({
+        $('#fileassets').jstree({
             core: {
                 data,
                 themes: {

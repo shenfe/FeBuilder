@@ -8,6 +8,8 @@ const cookies = {
     'token': 'febuilder:token'
 };
 
+const vTreeview = require('./view/treeview');
+
 const checkStatus = () => {
     let token = jscookie.get(cookies.token);
     let isValid = _ => (_ && _ !== '' && _ !== 'null');
@@ -108,10 +110,27 @@ const uploadFile = async (file, options) => {
         });
 };
 
+const saveProj = async () => {
+    return post('save', {
+        content: vTreeview.json()
+    })
+        .then(data => {
+            if (data.msg === 'success') {
+                console.log(data);
+            } else {
+                alert(`${data.msg}: ${data.desc}`);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 module.exports = {
     checkStatus,
     close: closeProj,
     open: openProj,
     create: createProj,
-    upload: uploadFile
+    upload: uploadFile,
+    save: saveProj
 };

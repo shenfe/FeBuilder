@@ -24,7 +24,11 @@ const readDir = (absDirPath, {
     onlyDir
 } = {}) => {
     onlyDir = onlyDir === false ? false : true;
-    if (!fs.lstatSync(absDirPath).isDirectory()) return null;
+    try {
+        if (!fs.lstatSync(absDirPath).isDirectory()) return null;
+    } catch (e) {
+        return null;
+    }
     let folders = fs.readdirSync(absDirPath)
         .filter(file => onlyDir ? fs.lstatSync(path.resolve(absDirPath, file)).isDirectory() : true)
         .map(folder => path.basename(folder));

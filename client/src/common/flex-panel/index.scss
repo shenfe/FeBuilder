@@ -1,0 +1,39 @@
+$color1: #5ca2f5;
+$color2: #b2cff1;
+
+.flex-panels {
+    display: flex;
+    flex-direction: column;
+    & > .flex-panel {
+        overflow: auto;
+        flex: 1;
+        .toggler {
+            font-size: 14px;
+            padding: 4px;
+            background-color: $color1;
+            color: #fff;
+            cursor: pointer;
+        }
+        .content {
+            display: block;
+            margin: 4px 0;
+        }
+    }
+    & > .flex-panel.inactive {
+        flex: none;
+        .toggler {
+            background-color: $color2;
+        }
+        .content {
+            display: none;
+        }
+    }
+
+    .jstree-default .jstree-hovered {
+        background: #fff;
+    }
+    .jstree-default .jstree-clicked {
+        background: #5ca2f5;
+        color: #fff;
+    }
+}

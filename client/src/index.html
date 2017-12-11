@@ -11,24 +11,30 @@
 <body>
     <div id="app">
         <div id="header">
-            <span id="op-close" class="op-item show-as-auth">[close]</span>
-            <span id="op-open" class="op-item">[open]</span>
-            <span id="op-create" class="op-item">[create]</span>
-            <span id="op-undo" class="op-item show-as-auth">[undo]</span>
-            <span id="op-redo" class="op-item show-as-auth">[redo]</span>
-            <span id="op-save" class="op-item show-as-auth">[save]</span>
+            <span id="op-close" class="op-item show-as-auth">Close</span>
+            <span id="op-open" class="op-item">Open</span>
+            <span id="op-create" class="op-item">Create</span>
+            <span id="op-undo" class="op-item show-as-auth">Undo</span>
+            <span id="op-redo" class="op-item show-as-auth">Redo</span>
+            <span id="op-save" class="op-item show-as-auth">Save</span>
         </div>
         <div id="notice"></div>
         <div id="main" class="show-as-auth">
-            <div id="resource">
-                <div id="components"></div>
-                <div id="fileAssets"></div>
+            <div id="resource" class="flex-panels">
+                <div id="components-outer" class="flex-panel">
+                    <div class="toggler">Components</div>
+                    <div id="components" class="content"></div>
+                </div>
+                <div id="fileAssets-outer" class="flex-panel">
+                    <div class="toggler">Files</div>
+                    <div id="fileassets" class="content"></div>
+                </div>
             </div>
             <div id="treeview"></div>
             <div id="setting"></div>
             <div id="preview"></div>
         </div>
-        <div id="status" class="show-as-auth"></div>
+        <!-- <div id="status" class="show-as-auth"></div> -->
         <div id="editor"><div id="editor-inner"></div></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>

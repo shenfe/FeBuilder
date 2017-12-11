@@ -19,6 +19,10 @@ const init = function (el) {
     $el.find('#op-create').click(function (e) {
         controller.create();
     });
+
+    $el.find('#op-save').click(function (e) {
+        controller.save();
+    });
 };
 
 module.exports = {
