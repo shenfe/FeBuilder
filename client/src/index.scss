@@ -1,3 +1,6 @@
+$color1: #108ee9;
+$color2: #666;
+
 html,
 body {
     margin: 0;
@@ -19,12 +22,16 @@ body {
 }
 
 #header {
-    height: 36px;
+    height: 22px;
     width: 100%;
-    background: #108ee9;
-    line-height: 36px;
+    background: $color1;
+    line-height: 22px;
+    font-size: 14px;
+    padding: 4px 0;
+    border-bottom: 1px solid $color2;
     .op-item {
         color: #eee;
+        margin-right: 8px;
         margin-left: 4px;
         cursor: pointer;
     }
@@ -48,12 +55,12 @@ body {
 
 #main > div {
     box-sizing: border-box;
-    min-width: 10px;
+    min-width: 180px;
     overflow: auto;
 }
 
 #main > div:not(:last-child) {
-    border-right: 1px #108ee9 solid;
+    border-right: 1px $color2 solid;
 }
 
 #resource {
@@ -78,7 +85,7 @@ body {
 #status {
     height: 24px;
     width: 100%;
-    background: #108ee9;
+    background: $color1;
 }
 
 #editor {

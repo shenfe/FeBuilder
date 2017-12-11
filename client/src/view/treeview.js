@@ -1,10 +1,12 @@
+const treeSelector = '#treeview-inner';
+
 const init = function (el) {
     
 };
 
 const render = data => {
     $(function () {
-        $('#treeview').jstree({
+        $(treeSelector).jstree({
             core: {
                 data,
                 themes: {
@@ -27,7 +29,7 @@ const render = data => {
 };
 
 const json = () => {
-    return $('#treeview').jstree('get_json');
+    return $(treeSelector).jstree('get_json');
 };
 
 module.exports = {

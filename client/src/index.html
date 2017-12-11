@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FeBuilder</title>
+    <link rel="stylesheet" href="//ionicons.com/css/ionicons.min.css?v=2.0.1" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.4/themes/default/style.min.css" />
 </head>
 
@@ -22,17 +23,59 @@
         <div id="main" class="show-as-auth">
             <div id="resource" class="flex-panels">
                 <div id="components-outer" class="flex-panel">
-                    <div class="toggler">Components</div>
+                    <div class="toggler">
+                        <span class="label">Components</span>
+                        <div class="right-ctrls">
+                            <span class="ctrl ion-android-refresh"></span>
+                            <span class="ctrl ion-android-add"></span>
+                            <span class="ctrl ion-android-remove"></span>
+                        </div>
+                    </div>
                     <div id="components" class="content"></div>
                 </div>
                 <div id="fileAssets-outer" class="flex-panel">
-                    <div class="toggler">Files</div>
+                    <div class="toggler">
+                        <span class="label">Files</span>
+                        <div class="right-ctrls">
+                            <span class="ctrl ion-android-refresh"></span>
+                            <span class="ctrl ion-android-add"></span>
+                            <span class="ctrl ion-android-remove"></span>
+                        </div>
+                    </div>
                     <div id="fileassets" class="content"></div>
                 </div>
             </div>
-            <div id="treeview"></div>
-            <div id="setting"></div>
-            <div id="preview"></div>
+            <div id="treeview" class="flex-panels">
+                <div class="flex-panel">
+                    <div class="toggler">
+                        <span class="label">Tree</span>
+                        <div class="right-ctrls">
+                            <span class="ctrl ion-android-refresh"></span>
+                        </div>
+                    </div>
+                    <div id="treeview-inner" class="content"></div>
+                </div>
+            </div>
+            <div id="setting" class="flex-panels">
+                <div class="flex-panel">
+                    <div class="toggler">
+                        <span class="label">Settings</span>
+                        <div class="right-ctrls"></div>
+                    </div>
+                    <div id="setting-inner" class="content"></div>
+                </div>
+            </div>
+            <div id="preview" class="flex-panels">
+                <div class="flex-panel">
+                    <div class="toggler">
+                        <span class="label">Preview</span>
+                        <div class="right-ctrls">
+                            <span class="ctrl ion-android-refresh"></span>
+                        </div>
+                    </div>
+                    <div id="preview-inner" class="content"></div>
+                </div>
+            </div>
         </div>
         <!-- <div id="status" class="show-as-auth"></div> -->
         <div id="editor"><div id="editor-inner"></div></div>

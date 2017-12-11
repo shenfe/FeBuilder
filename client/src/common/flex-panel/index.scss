@@ -1,28 +1,56 @@
-$color1: #5ca2f5;
-$color2: #b2cff1;
+$color1: #108ee9;
+$color2: #108ee9;
+$color3: #666;
 
 .flex-panels {
     display: flex;
     flex-direction: column;
     & > .flex-panel {
-        overflow: auto;
         flex: 1;
+        display: flex;
+        flex-direction: column;
         .toggler {
+            height: 22px;
             font-size: 14px;
             padding: 4px;
             background-color: $color1;
             color: #fff;
             cursor: pointer;
+            display: flex;
+            .label {
+                flex: 1;
+            }
+            .right-ctrls {
+                display: flex;
+                .ctrl {
+                    padding: 4px;
+                }
+            }
+            .ion-android-add {
+                display: none;
+            }
+            .ion-android-remove {
+                display: block;
+            }
         }
         .content {
             display: block;
             margin: 4px 0;
+            flex: 1;
+            overflow: auto;
         }
     }
     & > .flex-panel.inactive {
         flex: none;
+        border-bottom: 1px solid $color3;
         .toggler {
             background-color: $color2;
+            .ion-android-add {
+                display: block;
+            }
+            .ion-android-remove {
+                display: none;
+            }
         }
         .content {
             display: none;
@@ -35,5 +63,8 @@ $color2: #b2cff1;
     .jstree-default .jstree-clicked {
         background: #5ca2f5;
         color: #fff;
+    }
+    .jstree-default .jstree-anchor {
+        font-size: 12px;
     }
 }
