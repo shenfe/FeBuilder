@@ -17,7 +17,7 @@ const uploadStorage = multer.diskStorage({
     // 文件保存路径
     destination: function (req, file, cb) {
         console.log(req);
-        cb(null, `${uploadDir}/`);
+        cb(null, path.resolve(__dirname, uploadDir));
     },
     // 修改文件名称
     filename: function (req, file, cb) {
@@ -83,9 +83,23 @@ router.post(API.apis.test, async function (ctx, next) {
 /**
  * API: upload
  */
-router.post(API.apis.upload, upload.single('file'), async (ctx, next) => {
+router.post(API.apis.upload, upload.array('file[]'), async (ctx, next) => {
+    /**
+     * `ctx.req.files`，array是files数组，single是一个file对象
+     * 一个file对象格式：
+     * { fieldname: 'file[]',
+       originalname: '1513081211015.md',
+       encoding: '7bit',
+       mimetype: 'application/octet-stream',
+       destination: 'D:\\programs\\shenfe\\FeBuilder\\uploads',
+       filename: '1513081388581.md',
+       path: 'D:\\programs\\shenfe\\FeBuilder\\uploads\\1513081388581.md',
+       size: 42 }
+     */
+    ctx.status = 200;
     ctx.body = {
-        filename: ctx.req.file.filename // 返回文件名
+        msg: 'success',
+        data: ctx.req.files
     };
 });
 
@@ -289,7 +303,9 @@ router.get(API.apis.fileassets, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     ctx.status = 200;
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, `${uploadDir}`)),
+        data: util.readDir(path.resolve(__dirname, `${uploadDir}`), {
+            onlyDir: false
+        }),
         msg: 'success'
     };
     await next();

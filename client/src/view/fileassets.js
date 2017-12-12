@@ -41,6 +41,10 @@ const update = () => {
 
 let initialized = false;
 
+const API = require('../api');
+
+const uploader = require('dnd-upload');
+
 const init = function (el) {
     if (initialized) return;
     initialized = true;
@@ -52,6 +56,18 @@ const init = function (el) {
     });
 
     update();
+
+    uploader($('#fileassets')[0], {
+        apiUrl: API.apis.upload,
+        data: {
+            test: 'fileupload'
+        },
+        ondragover: () => { console.log('ondragover') },
+        ondragend: () => { console.log('ondragend') },
+        ondrop: () => { console.log('ondrop') },
+        onprogress: (v) => { console.log('onprogress', v) },
+        onread: () => { console.log('onread') }
+    });
 };
 
 module.exports = {

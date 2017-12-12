@@ -69,11 +69,11 @@
 
 const jscookie = __webpack_require__(12);
 
-const api = __webpack_require__(5);
+const api = __webpack_require__(2);
 
 const { get, post, input } = __webpack_require__(1);
 
-const cookies = __webpack_require__(2).cookies;
+const cookies = __webpack_require__(3).cookies;
 
 const checkStatus = () => {
     let token = jscookie.get(cookies.token);
@@ -204,13 +204,13 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const API = __webpack_require__(5);
+const API = __webpack_require__(2);
 
 const util = __webpack_require__(6);
 
-const consts = __webpack_require__(2);
+const consts = __webpack_require__(3);
 
-const { validation } = __webpack_require__(2);
+const { validation } = __webpack_require__(3);
 
 const get = (apiName, data = {}, options = {}) =>
     fetch(`${API.host}${API.apis[apiName]}?${util.querify(data)}`, util.cast({
@@ -251,6 +251,33 @@ module.exports = {
 /* 2 */
 /***/ (function(module, exports) {
 
+const port = 3000;
+const hostname = 'localhost';
+
+const host = `//${hostname}:${port}`;
+
+const apis = {
+    test: '/hello',
+    open: '/proj/open',
+    close: '/proj/close',
+    save: '/proj/save',
+    create: '/proj/create',
+    components: '/asset/component',
+    fileassets: '/asset/file',
+    upload: '/upload'
+};
+
+module.exports = {
+    port,
+    hostname,
+    host,
+    apis
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
 module.exports = {
     validation: {
         projname: v => (typeof v === 'string' && /[0-9a-zA-Z]{6,12}/.test(v)),
@@ -263,14 +290,14 @@ module.exports = {
 };
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(10);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 var g;
@@ -295,33 +322,6 @@ try {
 
 module.exports = g;
 
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-const port = 3000;
-const hostname = 'localhost';
-
-const host = `//${hostname}:${port}`;
-
-const apis = {
-    test: '/hello',
-    open: '/proj/open',
-    close: '/proj/close',
-    save: '/proj/save',
-    create: '/proj/create',
-    components: '/asset/component',
-    fileassets: '/asset/file',
-    upload: '/upload'
-};
-
-module.exports = {
-    port,
-    hostname,
-    host,
-    apis
-};
 
 /***/ }),
 /* 6 */
@@ -446,7 +446,7 @@ module.exports = {
 
 __webpack_require__(9);
 
-__webpack_require__(3);
+__webpack_require__(4);
 
 const controller = __webpack_require__(0);
 
@@ -458,9 +458,9 @@ const header = __webpack_require__(19);
 const components = __webpack_require__(20);
 const fileassets = __webpack_require__(21);
 const treeview = __webpack_require__(7);
-const setting = __webpack_require__(22);
-const preview = __webpack_require__(23);
-const editor = __webpack_require__(24);
+const setting = __webpack_require__(23);
+const preview = __webpack_require__(24);
+const editor = __webpack_require__(25);
 
 const { d } = __webpack_require__(6);
 
@@ -486,7 +486,7 @@ $(function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(11);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 11 */
@@ -10995,7 +10995,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function (factory) {
 	"use strict";
 	if (true) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(4)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -25592,6 +25592,10 @@ const update = () => {
 
 let initialized = false;
 
+const API = __webpack_require__(2);
+
+const uploader = __webpack_require__(22);
+
 const init = function (el) {
     if (initialized) return;
     initialized = true;
@@ -25603,6 +25607,18 @@ const init = function (el) {
     });
 
     update();
+
+    uploader($('#fileassets')[0], {
+        apiUrl: API.apis.upload,
+        data: {
+            test: 'fileupload'
+        },
+        ondragover: () => { console.log('ondragover') },
+        ondragend: () => { console.log('ondragend') },
+        ondrop: () => { console.log('ondrop') },
+        onprogress: (v) => { console.log('onprogress', v) },
+        onread: () => { console.log('onread') }
+    });
 };
 
 module.exports = {
@@ -25613,15 +25629,81 @@ module.exports = {
 /* 22 */
 /***/ (function(module, exports) {
 
-let target;
-
-const init = function (el) {
-    target = el;
+const acceptedTypes = {
+    'image/png': true,
+    'image/jpg': true,
+    'image/jpeg': true,
+    'image/gif': true
 };
 
-module.exports = {
-    init
+const readfile = function (file, onread) {
+    if (acceptedTypes[file.type] === true) {
+        let reader = new FileReader();
+        reader.onload = function (event) {
+            let image = new Image();
+            image.src = event.target.result;
+            onread && onread(image);
+        };
+        reader.readAsDataURL(file);
+    }
+    console.log(file.name + ':' + (file.size ? (file.size / 1024 | 0) + 'K' : ''));
 };
+
+const readfiles = function (files, { apiUrl, data = {}, onprogress, onread }) {
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        formData.append('file[]', files[i]);
+        readfile(files[i], onread);
+    }
+    for (let p in data) {
+        if (!data.hasOwnProperty(p)) continue;
+        if (typeof data[p] === 'function') {
+            formData.append(p, data[p]());
+        } else {
+            formData.append(p, data[p]);
+        }
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', apiUrl);
+    xhr.onload = function () {
+        onprogress(100);
+    };
+    xhr.upload.onprogress = function (event) {
+        if (event.lengthComputable) {
+            let complete = (event.loaded / event.total * 100 | 0);
+            onprogress(complete);
+        }
+    }
+    xhr.send(formData);
+};
+
+const bind = (el, options = {}) => {
+    let { apiUrl, data, ondragover, ondragend, ondrop, onprogress, onread } = options;
+
+    el.ondragover = function () {
+        ondragover.apply(this);
+        return false;
+    };
+
+    el.ondragend = function () {
+        ondragend.apply(this);
+        return false;
+    };
+
+    el.ondrop = function (e) {
+        e.preventDefault();
+        ondrop.apply(this);
+        readfiles(e.dataTransfer.files, {
+            apiUrl,
+            data,
+            onprogress,
+            onread
+        });
+    }
+};
+
+module.exports = bind;
 
 /***/ }),
 /* 23 */
@@ -25639,6 +25721,20 @@ module.exports = {
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+let target;
+
+const init = function (el) {
+    target = el;
+};
+
+module.exports = {
+    init
+};
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports) {
 
 let editor;
