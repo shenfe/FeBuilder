@@ -9,6 +9,9 @@ const treeSettings = {
         themes: {
             dots: false,
             icons: false
+        },
+        check_callback: function (operation, node, node_parent, node_position, more) {
+            return operation === 'copy_node';
         }
     },
     checkbox: {
@@ -62,11 +65,18 @@ const init = function (el) {
         data: {
             test: 'fileupload'
         },
-        ondragover: () => { console.log('ondragover') },
-        ondragend: () => { console.log('ondragend') },
-        ondrop: () => { console.log('ondrop') },
-        onprogress: (v) => { console.log('onprogress', v) },
-        onread: () => { console.log('onread') }
+        ondragover: function () { $(this).addClass('ondragover'); console.log('ondragover') },
+        ondragend: function () { console.log('ondragend') },
+        ondrop: function () { $(this).removeClass('ondragover'); console.log('ondrop') },
+        onprogress: function (v) {
+            if (v === 100) {
+                window.setTimeout(function () {
+                    update();
+                }, 200);
+            }
+            console.log('onprogress', v);
+        },
+        onread: function () { console.log('onread') }
     });
 };
 

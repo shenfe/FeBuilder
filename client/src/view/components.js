@@ -9,6 +9,9 @@ const treeSettings = {
         themes: {
             dots: false,
             icons: false
+        },
+        check_callback: function (operation, node, node_parent, node_position, more) {
+            return operation === 'copy_node';
         }
     },
     checkbox: {

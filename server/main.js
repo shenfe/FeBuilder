@@ -261,9 +261,37 @@ router.post(API.apis.save, async function (ctx, next) {
         return await next();
     }
 
-    await dbProjAuth.post({
+    let doc;
+    try {
+        doc = await dbProjAuth.find({
+            selector: {
+                name: projname
+            }
+        }).then(res => {
+            console.log(res);
+            if (res.docs.length) {
+                return res.docs[0];
+            } else {
+                throw new Error('Project not found.');
+            }
+        }).catch(err => {
+            console.log(err);
+            ctx.status = 500;
+            ctx.body = {
+                msg: 'error',
+                desc: 'Fail to find the project.'
+            };
+        });
+    } catch (e) {
+        return await next();
+    }
+    // console.log(doc);
+
+    await dbProjAuth.put({
         name: projname,
-        content: data.content
+        content: data.content,
+        _id: doc._id,
+        _rev: doc._rev,
     }).then(res => {
         console.log(res);
         ctx.status = 200;

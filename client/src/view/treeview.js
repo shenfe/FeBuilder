@@ -15,13 +15,13 @@ const render = data => {
             check_callback: function (operation, node, node_parent, node_position, more) {
                 // `operation` can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
                 // in case of 'rename_node' node_position is filled with the new node name
-                console.log('operation', operation);
-                return operation === 'rename_node' ? true : false;
+                if (more && more.is_foreign) return false;
+                return true;
             }
         },
         plugins: [
             'dnd',
-            // 'contextmenu'
+            'contextmenu'
         ]
     });
 };
@@ -39,6 +39,10 @@ const init = function (el) {
     target = el;
 
     update();
+
+    $(treeSelector).bind('move_node.jstree copy_node.jstree', function (e, data) {
+        console.log(data);
+    });
 };
 
 const json = () => {
