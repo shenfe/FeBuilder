@@ -60,103 +60,20 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-const treeSelector = '#treeview-inner';
-
-const init = function (el) {
-    
-};
-
-const render = data => {
-    $(function () {
-        $(treeSelector).jstree({
-            core: {
-                data,
-                themes: {
-                    dots: false,
-                    icons: false
-                },
-                check_callback: function (operation, node, node_parent, node_position, more) {
-                    // `operation` can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
-                    // in case of 'rename_node' node_position is filled with the new node name
-                    console.log('operation', operation);
-                    return operation === 'rename_node' ? true : false;
-                }
-            },
-            plugins: [
-                'dnd',
-                // 'contextmenu'
-            ]
-        });
-    });
-};
-
-const json = () => {
-    return $(treeSelector).jstree('get_json');
-};
-
-module.exports = {
-    init,
-    render,
-    json
-};
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(12);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+const jscookie = __webpack_require__(12);
 
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
+const api = __webpack_require__(5);
 
-var g;
+const { get, post, input } = __webpack_require__(1);
 
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const jscookie = __webpack_require__(16);
-
-const api = __webpack_require__(4);
-
-const { get, post, input } = __webpack_require__(5);
-
-const cookies = {
-    'token': 'febuilder:token'
-};
-
-const vTreeview = __webpack_require__(0);
+const cookies = __webpack_require__(2).cookies;
 
 const checkStatus = () => {
     let token = jscookie.get(cookies.token);
@@ -258,9 +175,9 @@ const uploadFile = async (file, options) => {
         });
 };
 
-const saveProj = async () => {
+const saveProj = async (treedata) => {
     return post('save', {
-        content: vTreeview.json()
+        content: __webpack_require__(7).json()
     })
         .then(data => {
             if (data.msg === 'success') {
@@ -275,7 +192,7 @@ const saveProj = async () => {
 };
 
 module.exports = {
-    checkStatus,
+    checkStatus: checkStatus,
     close: closeProj,
     open: openProj,
     create: createProj,
@@ -284,43 +201,16 @@ module.exports = {
 };
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-const port = 3000;
-const hostname = 'localhost';
-
-const host = `//${hostname}:${port}`;
-
-const apis = {
-    test: '/hello',
-    open: '/proj/open',
-    close: '/proj/close',
-    save: '/proj/save',
-    create: '/proj/create',
-    components: '/asset/component',
-    fileassets: '/asset/file',
-    upload: '/upload'
-};
-
-module.exports = {
-    port,
-    hostname,
-    host,
-    apis
-};
-
-/***/ }),
-/* 5 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const API = __webpack_require__(4);
+const API = __webpack_require__(5);
 
 const util = __webpack_require__(6);
 
-const consts = __webpack_require__(7);
+const consts = __webpack_require__(2);
 
-const { validation } = __webpack_require__(7);
+const { validation } = __webpack_require__(2);
 
 const get = (apiName, data = {}, options = {}) =>
     fetch(`${API.host}${API.apis[apiName]}?${util.querify(data)}`, util.cast({
@@ -355,6 +245,82 @@ module.exports = {
     get,
     post,
     input
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = {
+    validation: {
+        projname: v => (typeof v === 'string' && /[0-9a-zA-Z]{6,12}/.test(v)),
+        password: v => (typeof v === 'string' && /[0-9a-zA-Z]{6,12}/.test(v))
+    },
+    cookies: {
+        'projid': 'febuilder:projid',
+        'token': 'febuilder:token'
+    }
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(10);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+const port = 3000;
+const hostname = 'localhost';
+
+const host = `//${hostname}:${port}`;
+
+const apis = {
+    test: '/hello',
+    open: '/proj/open',
+    close: '/proj/close',
+    save: '/proj/save',
+    create: '/proj/create',
+    components: '/asset/component',
+    fileassets: '/asset/file',
+    upload: '/upload'
+};
+
+module.exports = {
+    port,
+    hostname,
+    host,
+    apis
 };
 
 /***/ }),
@@ -419,208 +385,111 @@ module.exports = {
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {
-    validation: {
-        projname: v => (typeof v === 'string' && /[0-9a-zA-Z]{6,12}/.test(v)),
-        password: v => (typeof v === 'string' && /[0-9a-zA-Z]{6,12}/.test(v))
+const treeSelector = '#treeview-inner';
+
+const controller = __webpack_require__(0);
+
+let target;
+
+const render = data => {
+    $(treeSelector).jstree({
+        core: {
+            data,
+            themes: {
+                dots: false,
+                icons: false
+            },
+            check_callback: function (operation, node, node_parent, node_position, more) {
+                // `operation` can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
+                // in case of 'rename_node' node_position is filled with the new node name
+                console.log('operation', operation);
+                return operation === 'rename_node' ? true : false;
+            }
+        },
+        plugins: [
+            'dnd',
+            // 'contextmenu'
+        ]
+    });
+};
+
+const update = () => {
+    if (controller.checkStatus()) {
+        controller.open(true).then(data => {
+            console.log('project', data);
+            render(data.data.content);
+        });
     }
 };
 
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-let editor;
-let container;
-
 const init = function (el) {
-    container = el;
-    editor = ace.edit('editor-inner');
-    // editor.setTheme('ace/theme/monokai');
+    target = el;
+
+    update();
 };
 
-const edit = async function (text, type) {
-    editor.getSession().setMode('ace/mode/javascript');
-    editor.setValue(text);
-    return new Promise(function (resolve) {
-        $(container).show().on('click', function handler(e) {
-            if ($(e.target).is('#editor-inner') || $(e.target).parents('#editor-inner').length) return;
-            $(container).hide().off('click', handler);
-            resolve(editor.getValue());
-        });
-    });
+const json = () => {
+    return $(treeSelector).jstree('get_json');
 };
 
 module.exports = {
     init,
-    edit
+    json
 };
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(9);
+
+__webpack_require__(3);
+
+const controller = __webpack_require__(0);
+
+const { get, post } = __webpack_require__(1);
+
+__webpack_require__(13);
+
+const header = __webpack_require__(19);
+const components = __webpack_require__(20);
+const fileassets = __webpack_require__(21);
+const treeview = __webpack_require__(7);
+const setting = __webpack_require__(22);
+const preview = __webpack_require__(23);
+const editor = __webpack_require__(24);
+
+const { d } = __webpack_require__(6);
+
+$(function () {
+    header.init(d('#header'));
+    components.init(d('#components-outer'));
+    fileassets.init(d('#fileassets-outer'));
+    treeview.init(d('#treeview'));
+    setting.init(d('#setting'));
+    preview.init(d('#preview'));
+    editor.init(d('#editor'));
+});
+
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-const init = function (el) {
-    
-};
-
-const renderComponents = data => {
-    $(function () {
-        $('#components').jstree({
-            core: {
-                data,
-                themes: {
-                    dots: false,
-                    icons: false
-                }
-            },
-            checkbox: {
-                keep_selected_style: false
-            },
-            plugins: [
-                'dnd'
-            ]
-        });
-    });
-};
-
-const renderFileAssets = data => {
-    $(function () {
-        $('#fileassets').jstree({
-            core: {
-                data,
-                themes: {
-                    dots: false,
-                    icons: false
-                }
-            },
-            checkbox: {
-                keep_selected_style: false
-            },
-            plugins: [
-                'dnd'
-            ]
-        });
-    });
-};
-
-module.exports = {
-    init,
-    renderComponents,
-    renderFileAssets
-};
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(11);
-
-__webpack_require__(1);
-
-__webpack_require__(14);
-
-const interact = __webpack_require__(15);
-
-const controller = __webpack_require__(3);
-
-const { get, post } = __webpack_require__(5);
-
-__webpack_require__(17);
-
-const vResource = __webpack_require__(9);
-const vTreeview = __webpack_require__(0);
-
-/* 项目获取 */
-(function projOpen() {
-    if (controller.checkStatus()) {
-        /* 加载资源数据 */
-        get('components').then(data => {
-            console.log('components', data);
-            vResource.renderComponents(data.data);
-        });
-        get('fileassets').then(data => {
-            console.log('fileassets', data);
-            vResource.renderFileAssets(data.data);
-        });
-
-        /* 加载项目数据 */
-        controller.open(true).then(data => {
-            console.log('project', data);
-            vTreeview.render(data.data.content);
-        });
-    }
-})();
-
-/* 面板尺寸控制 */
-(function () {
-    const resizableConf = {
-        // resize from all edges and corners
-        edges: { right: true },
-
-        // keep the edges inside the parent
-        restrictEdges: {
-            outer: 'parent',
-            endOnly: true
-        },
-
-        // minimum size
-        restrictSize: {
-            min: { width: 20 }
-        },
-
-        inertia: false
-    };
-
-    const panels = [
-        'resource',
-        'treeview',
-        'setting',
-        'preview'
-    ];
-
-    panels.slice(0, -1).forEach((p, i) => {
-        interact(`#${p}`)
-            .resizable(resizableConf)
-            .on('resizemove', function (event) {
-                let target = event.target;
-                let next = $(`#${panels[i + 1]}`)[0];
-                let tw = target.getBoundingClientRect().width;
-                let nw = next.getBoundingClientRect().width;
-                target.style.width = (tw + event.dx) + 'px';
-                next.style.width = (nw - event.dx) + 'px';
-            });
-    });
-
-    $(function () {
-        panels.forEach(p => {
-            $(`#${p}`).width($(`#${p}`).width());
-        });
-    });
-
-    $(window).resize(function () {
-        $(`#${panels.slice(-1)[0]}`).width($(window).width() - panels.slice(0, -1).map(p => $(`#${p}`).width()).reduce((prev, next) => prev + next));
-    });
-})();
-
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(11);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
 /* 11 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(13);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ }),
-/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10880,6 +10749,245 @@ return jQuery;
 
 
 /***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * JavaScript Cookie v2.2.0
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+;(function (factory) {
+	var registeredInModuleLoader = false;
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		registeredInModuleLoader = true;
+	}
+	if (true) {
+		module.exports = factory();
+		registeredInModuleLoader = true;
+	}
+	if (!registeredInModuleLoader) {
+		var OldCookies = window.Cookies;
+		var api = window.Cookies = factory();
+		api.noConflict = function () {
+			window.Cookies = OldCookies;
+			return api;
+		};
+	}
+}(function () {
+	function extend () {
+		var i = 0;
+		var result = {};
+		for (; i < arguments.length; i++) {
+			var attributes = arguments[ i ];
+			for (var key in attributes) {
+				result[key] = attributes[key];
+			}
+		}
+		return result;
+	}
+
+	function init (converter) {
+		function api (key, value, attributes) {
+			var result;
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			// Write
+
+			if (arguments.length > 1) {
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
+
+				if (typeof attributes.expires === 'number') {
+					var expires = new Date();
+					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+					attributes.expires = expires;
+				}
+
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				if (!converter.write) {
+					value = encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+				} else {
+					value = converter.write(value, key);
+				}
+
+				key = encodeURIComponent(String(key));
+				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+				key = key.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+					stringifiedAttributes += '=' + attributes[attributeName];
+				}
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			}
+
+			// Read
+
+			if (!key) {
+				result = {};
+			}
+
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling "get()"
+			var cookies = document.cookie ? document.cookie.split('; ') : [];
+			var rdecode = /(%[0-9A-Z]{2})+/g;
+			var i = 0;
+
+			for (; i < cookies.length; i++) {
+				var parts = cookies[i].split('=');
+				var cookie = parts.slice(1).join('=');
+
+				if (!this.json && cookie.charAt(0) === '"') {
+					cookie = cookie.slice(1, -1);
+				}
+
+				try {
+					var name = parts[0].replace(rdecode, decodeURIComponent);
+					cookie = converter.read ?
+						converter.read(cookie, name) : converter(cookie, name) ||
+						cookie.replace(rdecode, decodeURIComponent);
+
+					if (this.json) {
+						try {
+							cookie = JSON.parse(cookie);
+						} catch (e) {}
+					}
+
+					if (key === name) {
+						result = cookie;
+						break;
+					}
+
+					if (!key) {
+						result[name] = cookie;
+					}
+				} catch (e) {}
+			}
+
+			return result;
+		}
+
+		api.set = api;
+		api.get = function (key) {
+			return api.call(api, key);
+		};
+		api.getJSON = function () {
+			return api.apply({
+				json: true
+			}, [].slice.call(arguments));
+		};
+		api.defaults = {};
+
+		api.remove = function (key, attributes) {
+			api(key, '', extend(attributes, {
+				expires: -1
+			}));
+		};
+
+		api.withConverter = init;
+
+		return api;
+	}
+
+	return init(function () {});
+}));
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(14);
+
+__webpack_require__(15);
+
+__webpack_require__(17);
+
+const interact = __webpack_require__(18);
+
+/* 面板尺寸控制 */
+(function () {
+    const resizableConf = {
+        // resize from all edges and corners
+        edges: { right: true },
+
+        // keep the edges inside the parent
+        restrictEdges: {
+            outer: 'parent',
+            endOnly: true
+        },
+
+        // minimum size
+        restrictSize: {
+            min: { width: 20 }
+        },
+
+        inertia: false
+    };
+
+    const panels = [
+        'resource',
+        'treeview',
+        'setting',
+        'preview'
+    ];
+
+    panels.slice(0, -1).forEach((p, i) => {
+        interact(`#${p}`)
+            .resizable(resizableConf)
+            .on('resizemove', function (event) {
+                let target = event.target;
+                let next = $(`#${panels[i + 1]}`)[0];
+                let tw = target.getBoundingClientRect().width;
+                let nw = next.getBoundingClientRect().width;
+                target.style.width = (tw + event.dx) + 'px';
+                next.style.width = (nw - event.dx) + 'px';
+            });
+    });
+
+    $(function () {
+        panels.forEach(p => {
+            $(`#${p}`).width($(`#${p}`).width());
+        });
+    });
+
+    $(window).resize(function () {
+        $(`#${panels.slice(-1)[0]}`).width($(window).width() - panels.slice(0, -1).map(p => $(`#${p}`).width()).reduce((prev, next) => prev + next));
+    });
+})();
+
+
+/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10887,7 +10995,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function (factory) {
 	"use strict";
 	if (true) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -19314,6 +19422,48 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(16);
+
+$('.flex-panel .toggler .label').click(function (e) {
+    let $panel = $(e.target).closest('.flex-panel');
+    if (!$panel.siblings().length && !$panel.is('.inactive')) return;
+    $panel.toggleClass('inactive');
+});
+
+$('.flex-panel .toggler .ctrl-show').click(function (e) {
+    let $panel = $(e.target).closest('.flex-panel');
+    $panel.removeClass('inactive');
+});
+
+$('.flex-panel .toggler .ctrl-hide').click(function (e) {
+    let $panel = $(e.target).closest('.flex-panel');
+    if (!$panel.siblings().length && !$panel.is('.inactive')) return;
+    $panel.addClass('inactive');
+});
+
+$('.flex-panel .toggler .ctrl-update').click(function (e) {
+    let $panel = $(e.target).closest('.flex-panel');
+    let componentName = $panel.attr('component-name');
+    if (!componentName) return;
+    document.dispatchEvent(new CustomEvent(`${componentName}-update`));
+});
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /**
  * interact.js v1.2.9
  *
@@ -25295,249 +25445,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * JavaScript Cookie v2.2.0
- * https://github.com/js-cookie/js-cookie
- *
- * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
- * Released under the MIT license
- */
-;(function (factory) {
-	var registeredInModuleLoader = false;
-	if (true) {
-		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		registeredInModuleLoader = true;
-	}
-	if (true) {
-		module.exports = factory();
-		registeredInModuleLoader = true;
-	}
-	if (!registeredInModuleLoader) {
-		var OldCookies = window.Cookies;
-		var api = window.Cookies = factory();
-		api.noConflict = function () {
-			window.Cookies = OldCookies;
-			return api;
-		};
-	}
-}(function () {
-	function extend () {
-		var i = 0;
-		var result = {};
-		for (; i < arguments.length; i++) {
-			var attributes = arguments[ i ];
-			for (var key in attributes) {
-				result[key] = attributes[key];
-			}
-		}
-		return result;
-	}
-
-	function init (converter) {
-		function api (key, value, attributes) {
-			var result;
-			if (typeof document === 'undefined') {
-				return;
-			}
-
-			// Write
-
-			if (arguments.length > 1) {
-				attributes = extend({
-					path: '/'
-				}, api.defaults, attributes);
-
-				if (typeof attributes.expires === 'number') {
-					var expires = new Date();
-					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
-					attributes.expires = expires;
-				}
-
-				// We're using "expires" because "max-age" is not supported by IE
-				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
-
-				try {
-					result = JSON.stringify(value);
-					if (/^[\{\[]/.test(result)) {
-						value = result;
-					}
-				} catch (e) {}
-
-				if (!converter.write) {
-					value = encodeURIComponent(String(value))
-						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
-				} else {
-					value = converter.write(value, key);
-				}
-
-				key = encodeURIComponent(String(key));
-				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
-				key = key.replace(/[\(\)]/g, escape);
-
-				var stringifiedAttributes = '';
-
-				for (var attributeName in attributes) {
-					if (!attributes[attributeName]) {
-						continue;
-					}
-					stringifiedAttributes += '; ' + attributeName;
-					if (attributes[attributeName] === true) {
-						continue;
-					}
-					stringifiedAttributes += '=' + attributes[attributeName];
-				}
-				return (document.cookie = key + '=' + value + stringifiedAttributes);
-			}
-
-			// Read
-
-			if (!key) {
-				result = {};
-			}
-
-			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all. Also prevents odd result when
-			// calling "get()"
-			var cookies = document.cookie ? document.cookie.split('; ') : [];
-			var rdecode = /(%[0-9A-Z]{2})+/g;
-			var i = 0;
-
-			for (; i < cookies.length; i++) {
-				var parts = cookies[i].split('=');
-				var cookie = parts.slice(1).join('=');
-
-				if (!this.json && cookie.charAt(0) === '"') {
-					cookie = cookie.slice(1, -1);
-				}
-
-				try {
-					var name = parts[0].replace(rdecode, decodeURIComponent);
-					cookie = converter.read ?
-						converter.read(cookie, name) : converter(cookie, name) ||
-						cookie.replace(rdecode, decodeURIComponent);
-
-					if (this.json) {
-						try {
-							cookie = JSON.parse(cookie);
-						} catch (e) {}
-					}
-
-					if (key === name) {
-						result = cookie;
-						break;
-					}
-
-					if (!key) {
-						result[name] = cookie;
-					}
-				} catch (e) {}
-			}
-
-			return result;
-		}
-
-		api.set = api;
-		api.get = function (key) {
-			return api.call(api, key);
-		};
-		api.getJSON = function () {
-			return api.apply({
-				json: true
-			}, [].slice.call(arguments));
-		};
-		api.defaults = {};
-
-		api.remove = function (key, attributes) {
-			api(key, '', extend(attributes, {
-				expires: -1
-			}));
-		};
-
-		api.withConverter = init;
-
-		return api;
-	}
-
-	return init(function () {});
-}));
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(18);
-
-const header = __webpack_require__(20);
-const resource = __webpack_require__(9);
-const treeview = __webpack_require__(0);
-const setting = __webpack_require__(21);
-const preview = __webpack_require__(22);
-// const status = require('./status');
-const editor = __webpack_require__(8);
-
-const { d } = __webpack_require__(6);
-
-header.init(d('#header'));
-resource.init(d('#resource'));
-treeview.init(d('#treeview'));
-setting.init(d('#setting'));
-preview.init(d('#preview'));
-// status.init(d('#status'));
-editor.init(d('#editor'));
-
-// window.setTimeout(async function () {
-//     let data = await editor.edit('test');
-//     console.log(data);
-// }, 2000);
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(19);
-
-$('.flex-panel .toggler .label').click(function (e) {
-    let $panel = $(e.target).closest('.flex-panel');
-    if (!$panel.siblings().length && !$panel.is('.inactive')) return;
-    $panel.toggleClass('inactive');
-});
-
-$('.flex-panel .toggler .ion-android-add').click(function (e) {
-    let $panel = $(e.target).closest('.flex-panel');
-    $panel.removeClass('inactive');
-});
-
-$('.flex-panel .toggler .ion-android-remove').click(function (e) {
-    let $panel = $(e.target).closest('.flex-panel');
-    if (!$panel.siblings().length && !$panel.is('.inactive')) return;
-    $panel.addClass('inactive');
-});
-
-/***/ }),
 /* 19 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const controller = __webpack_require__(3);
+const controller = __webpack_require__(0);
 
-const editor = __webpack_require__(8);
+let target;
 
 const init = function (el) {
-    const $el = $(el);
+    target = el;
+
+    let $el = $(el);
     $el.find('#op-close').click(function (e) {
         controller.close()
             .then(() => {
@@ -25564,11 +25482,127 @@ module.exports = {
 };
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports) {
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { get, post } = __webpack_require__(1);
+
+const controller = __webpack_require__(0);
+
+let target;
+
+const treeSettings = {
+    core: {
+        themes: {
+            dots: false,
+            icons: false
+        }
+    },
+    checkbox: {
+        keep_selected_style: false
+    },
+    plugins: [
+        'dnd'
+    ]
+};
+
+let treeInitialized = false;
+
+const render = data => {
+    if (!treeInitialized) {
+        treeInitialized = true;
+        $('#components').jstree(treeSettings);
+    }
+    $('#components').jstree(true).settings.core.data = data;
+    $('#components').jstree(true).refresh();
+};
+
+const update = () => {
+    if (controller.checkStatus()) {
+        get('components').then(data => {
+            console.log('components', data);
+            render(data.data);
+        });
+    }
+};
+
+let initialized = false;
 
 const init = function (el) {
-    
+    if (initialized) return;
+    initialized = true;
+
+    target = el;
+
+    document.addEventListener(`components-update`, function () {
+        update();
+    });
+
+    update();
+};
+
+module.exports = {
+    init
+};
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { get, post } = __webpack_require__(1);
+
+const controller = __webpack_require__(0);
+
+let target;
+
+const treeSettings = {
+    core: {
+        themes: {
+            dots: false,
+            icons: false
+        }
+    },
+    checkbox: {
+        keep_selected_style: false
+    },
+    plugins: [
+        'dnd'
+    ]
+};
+
+let treeInitialized = false;
+
+const render = data => {
+    if (!treeInitialized) {
+        treeInitialized = true;
+        $('#fileassets').jstree(treeSettings);
+    }
+    $('#fileassets').jstree(true).settings.core.data = data;
+    $('#fileassets').jstree(true).refresh();
+};
+
+const update = () => {
+    if (controller.checkStatus()) {
+        get('fileassets').then(data => {
+            console.log('fileassets', data);
+            render(data.data);
+        });
+    }
+};
+
+let initialized = false;
+
+const init = function (el) {
+    if (initialized) return;
+    initialized = true;
+
+    target = el;
+
+    document.addEventListener(`fileassets-update`, function () {
+        update();
+    });
+
+    update();
 };
 
 module.exports = {
@@ -25579,13 +25613,64 @@ module.exports = {
 /* 22 */
 /***/ (function(module, exports) {
 
+let target;
+
 const init = function (el) {
-    
+    target = el;
 };
 
 module.exports = {
     init
 };
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+let target;
+
+const init = function (el) {
+    target = el;
+};
+
+module.exports = {
+    init
+};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+let editor;
+let container;
+
+const init = function (el) {
+    container = el;
+    editor = ace.edit('editor-inner');
+    // editor.setTheme('ace/theme/monokai');
+};
+
+const edit = async function (text, type) {
+    editor.getSession().setMode('ace/mode/javascript');
+    editor.setValue(text);
+    return new Promise(function (resolve) {
+        $(container).show().on('click', function handler(e) {
+            if ($(e.target).is('#editor-inner') || $(e.target).parents('#editor-inner').length) return;
+            $(container).hide().off('click', handler);
+            resolve(editor.getValue());
+        });
+    });
+};
+
+module.exports = {
+    init,
+    edit
+};
+
+// window.setTimeout(async function () {
+//     let data = await edit('test');
+//     console.log(data);
+// }, 2000);
 
 /***/ })
 /******/ ]);

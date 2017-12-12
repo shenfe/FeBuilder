@@ -1,9 +1,11 @@
 const controller = require('../controller');
 
-const editor = require('./editor');
+let target;
 
 const init = function (el) {
-    const $el = $(el);
+    target = el;
+
+    let $el = $(el);
     $el.find('#op-close').click(function (e) {
         controller.close()
             .then(() => {

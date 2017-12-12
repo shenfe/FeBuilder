@@ -4,11 +4,7 @@ const api = require('./api');
 
 const { get, post, input } = require('./helper');
 
-const cookies = {
-    'token': 'febuilder:token'
-};
-
-const vTreeview = require('./view/treeview');
+const cookies = require('./const').cookies;
 
 const checkStatus = () => {
     let token = jscookie.get(cookies.token);
@@ -110,9 +106,9 @@ const uploadFile = async (file, options) => {
         });
 };
 
-const saveProj = async () => {
+const saveProj = async (treedata) => {
     return post('save', {
-        content: vTreeview.json()
+        content: require('./view/treeview').json()
     })
         .then(data => {
             if (data.msg === 'success') {
@@ -127,7 +123,7 @@ const saveProj = async () => {
 };
 
 module.exports = {
-    checkStatus,
+    checkStatus: checkStatus,
     close: closeProj,
     open: openProj,
     create: createProj,

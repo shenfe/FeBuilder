@@ -33,7 +33,7 @@ const session = require('koa-session');
 
 const md5 = require('md5');
 
-const { validation } = require('../client/src/const');
+const { validation, cookies } = require('../client/src/const');
 
 const PouchDB = require('pouchdb');
 PouchDB.plugin(require('pouchdb-find'));
@@ -51,11 +51,6 @@ dbProjAuth.createIndex({
 const API = require('../client/src/api');
 
 app.keys = ['some secret for febuilder server'];
-
-const cookies = {
-    'projid': 'febuilder:projid',
-    'token': 'febuilder:token'
-};
 
 /**
  * Set browser cookies in the context object
