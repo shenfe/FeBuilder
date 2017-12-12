@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "dnd-upload": "^0.1.0",
     "fromform": "^0.1.0",
     "interactjs": "^1.2.9",
     "ionicons": "^3.0.0",
