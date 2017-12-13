@@ -1,0 +1,25 @@
+$padding: 0 4px; // size_4
+$height: 40px; // size
+$title_height: 24px; // size
+$title_line: 24px; // size
+$title_font: 16px; // size
+$desc_height: 16px; // size
+$desc_line: 16px; // size
+$desc_font: 12px; // size
+
+.i-combin-title-desc {
+    padding: $padding;
+    height: $height;
+}
+
+.i-combin-title-desc--title {
+    height: $title_height;
+    line-height: $title_line;
+    font-size: $title_font;
+}
+
+.i-combin-title-desc--desc {
+    height: $desc_height;
+    line-height: $desc_line;
+    font-size: $desc_font;
+}

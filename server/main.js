@@ -325,7 +325,21 @@ router.get(API.apis.components, async function (ctx, next) {
     ctx.body = {
         data: util.readDir(path.resolve(__dirname, '../base/preset'), {
             data: function (dirPath) {
-                let idata = uiInterface.parse(dirPath);
+                let idata = uiInterface.parse(dirPath, {
+                    converter: function (varArr) {
+                        let re = {};
+                        varArr.forEach(v => {
+                            let obj = {};
+                            re[v.name] = obj;
+                            obj._type = (function (p) {
+                                // TODO
+                                return 'text';
+                            })(v.name);
+                            obj._value = v.value;
+                        });
+                        return re;
+                    }
+                });
                 console.log(dirPath, idata);
                 return idata;
             }
