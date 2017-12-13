@@ -21,7 +21,8 @@ const isEmpty = obj => {
 };
 
 const readDir = (absDirPath, {
-    onlyDir
+    onlyDir,
+    data
 } = {}) => {
     onlyDir = onlyDir === false ? false : true;
     try {
@@ -34,11 +35,14 @@ const readDir = (absDirPath, {
         .map(folder => path.basename(folder));
     let result = [];
     folders.forEach(f => {
-        let rd = readDir(path.resolve(absDirPath, f));
-        if (onlyDir && rd instanceof Array && !rd.length) rd = null;
+        let rd = readDir(path.resolve(absDirPath, f), {
+            onlyDir,
+            data
+        });
         result.push(rd === null ? f : {
             text: f,
-            children: rd
+            children: rd,
+            data: data ? data(path.resolve(absDirPath, f), f) : null
         });
     });
     return result;

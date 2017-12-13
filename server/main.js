@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const util = require('./util');
 
+const uiInterface = require('ui-interface');
+
 const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
@@ -321,7 +323,13 @@ router.get(API.apis.components, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     ctx.status = 200;
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, '../base/preset')),
+        data: util.readDir(path.resolve(__dirname, '../base/preset'), {
+            data: function (dirPath) {
+                let idata = uiInterface.parse(dirPath);
+                console.log(dirPath, idata);
+                return idata;
+            }
+        }),
         msg: 'success'
     };
     await next();

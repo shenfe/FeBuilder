@@ -4,6 +4,8 @@ const controller = require('../controller');
 
 let target;
 
+const treeSelector = '#components';
+
 const treeSettings = {
     core: {
         themes: {
@@ -27,10 +29,10 @@ let treeInitialized = false;
 const render = data => {
     if (!treeInitialized) {
         treeInitialized = true;
-        $('#components').jstree(treeSettings);
+        $(treeSelector).jstree(treeSettings);
     }
-    $('#components').jstree(true).settings.core.data = data;
-    $('#components').jstree(true).refresh();
+    $(treeSelector).jstree(true).settings.core.data = data;
+    $(treeSelector).jstree(true).refresh();
 };
 
 const update = () => {
@@ -52,6 +54,10 @@ const init = function (el) {
 
     document.addEventListener(`components-update`, function () {
         update();
+    });
+
+    $(treeSelector).bind('select_node.jstree', function (e, data) {
+        console.log(data);
     });
 
     update();

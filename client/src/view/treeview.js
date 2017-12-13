@@ -43,6 +43,10 @@ const init = function (el) {
     $(treeSelector).bind('move_node.jstree copy_node.jstree', function (e, data) {
         console.log(data);
     });
+
+    $(treeSelector).bind('select_node.jstree', function (e, data) {
+        console.log(data);
+    });
 };
 
 const json = () => {
