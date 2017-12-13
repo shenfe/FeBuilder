@@ -55,6 +55,7 @@ const ensureDir = dir => {
         if (!dirs.length) break;
         p.push(dirs.shift());
         let d = p.join('/');
+        if (d === '') continue;
         if (fs.existsSync(d) && fs.statSync(d).isDirectory()) continue;
         fs.mkdirSync(d);
     }

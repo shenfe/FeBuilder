@@ -51,6 +51,7 @@ const { validation, cookies } = require('../client/src/const');
 
 const PouchDB = require('pouchdb');
 PouchDB.plugin(require('pouchdb-find'));
+util.ensureDir(path.resolve(__dirname, '../db'));
 
 const dbProjAuth = new PouchDB('db/proj_auth');
 // const dbProjInfo = new PouchDB('db/proj_info');
