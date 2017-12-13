@@ -33,7 +33,12 @@ const render = data => {
     $('#fileassets').jstree(true).refresh();
 };
 
+let lastUpdateTime;
 const update = () => {
+    if (lastUpdateTime) {
+        if (Date.now() - lastUpdateTime < 100) return;
+    }
+    lastUpdateTime = Date.now();
     if (controller.checkStatus()) {
         get('fileassets').then(data => {
             console.log('fileassets', data);

@@ -16,13 +16,25 @@ const uploadDir = '../uploads';
 const uploadStorage = multer.diskStorage({
     // 文件保存路径
     destination: function (req, file, cb) {
-        console.log(req);
-        cb(null, path.resolve(__dirname, uploadDir));
+        let projname = util.parseCookies(req)[cookies.projid];
+        let savePath;
+        if (!projname) {
+            savePath = path.resolve(__dirname, uploadDir);
+        } else {
+            savePath = path.resolve(__dirname, `${uploadDir}/${projname}`);
+        }
+        util.ensureDir(savePath);
+        cb(null, savePath);
     },
     // 修改文件名称
     filename: function (req, file, cb) {
-        let fileFormat = (file.originalname).split('.');
-        cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1]);
+        let projname = util.parseCookies(req)[cookies.projid];
+        let filename = file.originalname;
+        while (fs.existsSync(path.resolve(__dirname, `${uploadDir}/${projname}/${filename}`))) {
+            filename = util.newFileName(filename);
+            console.log(filename);
+        }
+        cb(null, filename);
     }
 });
 const upload = multer({ storage: uploadStorage });
@@ -85,16 +97,7 @@ router.post(API.apis.test, async function (ctx, next) {
  */
 router.post(API.apis.upload, upload.array('file[]'), async (ctx, next) => {
     /**
-     * `ctx.req.files`，array是files数组，single是一个file对象
-     * 一个file对象格式：
-     * { fieldname: 'file[]',
-       originalname: '1513081211015.md',
-       encoding: '7bit',
-       mimetype: 'application/octet-stream',
-       destination: 'D:\\programs\\shenfe\\FeBuilder\\uploads',
-       filename: '1513081388581.md',
-       path: 'D:\\programs\\shenfe\\FeBuilder\\uploads\\1513081388581.md',
-       size: 42 }
+     * https://github.com/expressjs/multer/blob/master/doc/README-zh-cn.md
      */
     ctx.status = 200;
     ctx.body = {
@@ -329,9 +332,20 @@ router.get(API.apis.components, async function (ctx, next) {
  */
 router.get(API.apis.fileassets, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    
+    let projname = ctx.cookies.get(cookies.projid);
+    if (!projname) {
+        ctx.status = 500;
+        ctx.body = {
+            msg: 'error',
+            desc: 'Unknown project.'
+        };
+        return await next();
+    }
+
     ctx.status = 200;
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, `${uploadDir}`), {
+        data: util.readDir(path.resolve(__dirname, `${uploadDir}/${projname}`), {
             onlyDir: false
         }),
         msg: 'success'
