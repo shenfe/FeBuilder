@@ -18,8 +18,13 @@ class Project {
     updateName(v) {
         this.name = v;
     }
+    updateStyle(v) {
+        this.style = v;
+    }
 }
 
 const proj = new Project();
+
+window.__project = proj;
 
 module.exports = proj;

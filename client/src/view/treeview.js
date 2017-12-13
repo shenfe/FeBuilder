@@ -17,6 +17,10 @@ const render = data => {
                 // `operation` can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
                 // in case of 'rename_node' node_position is filled with the new node name
                 if (more && more.is_foreign) return false;
+                if (['rename_node', 'delete_node', 'move_node', 'copy_node', 'edit'].includes(operation) &&
+                    node.data && node.data.isSlot) return false;
+                if (node_parent.data && node_parent.data.type === 'slotter' && !(node.data && node.data.isSlot))
+                    return false;
                 return true;
             }
         },
@@ -48,6 +52,19 @@ const init = function (el) {
     $(treeSelector).bind('copy_node.jstree', function (e, data) {
         helper.copyNodeData(data.old_instance, data.original, data.new_instance, data.node, true);
         console.log('copy_node', data);
+        if (data.node.data.slots) {
+            data.node.data.slots.forEach(slot => {
+                data.instance.create_node(data.node, {
+                    text: `[${slot.name}]`,
+                    data: {
+                        isSlot: true,
+                        name: slot.name,
+                        text: slot.text,
+                        nodes: slot.nodes
+                    }
+                });
+            });
+        }
         return true;
     });
 

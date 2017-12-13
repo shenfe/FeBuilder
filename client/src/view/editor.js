@@ -9,7 +9,7 @@ const init = function (el) {
 
 const edit = async function (text, type) {
     editor.getSession().setMode('ace/mode/javascript');
-    editor.setValue(text);
+    editor.setValue(text || '');
     return new Promise(function (resolve) {
         $(container).show().on('click', function handler(e) {
             if ($(e.target).is('#editor-inner') || $(e.target).parents('#editor-inner').length) return;

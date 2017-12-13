@@ -1,0 +1,14 @@
+#setting {
+    .content div {
+        padding: 2px 4px;
+    }
+    label {
+        padding: 0 4px;
+        font-size: 12px;
+    }
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        font-size: 12px;
+    }
+}

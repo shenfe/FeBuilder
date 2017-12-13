@@ -340,7 +340,8 @@ router.get(API.apis.components, async function (ctx, next) {
                         return re;
                     }
                 });
-                console.log(dirPath, idata);
+                // console.log(dirPath, idata);
+                if (idata && idata.slots && idata.slots.length) idata.type = 'slotter';
                 return idata;
             }
         }),
