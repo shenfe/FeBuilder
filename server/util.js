@@ -46,7 +46,7 @@ const readDir = (absDirPath, {
         });
     });
     return result;
-}
+};
 
 const ensureDir = dir => {
     let dirs = dir.split('/');

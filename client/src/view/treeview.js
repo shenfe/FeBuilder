@@ -1,6 +1,7 @@
 const treeSelector = '#treeview-inner';
 
 const controller = require('../controller');
+const helper = require('../helper');
 
 let target;
 
@@ -40,12 +41,18 @@ const init = function (el) {
 
     update();
 
-    $(treeSelector).bind('move_node.jstree copy_node.jstree', function (e, data) {
-        console.log(data);
+    $(treeSelector).bind('move_node.jstree', function (e, data) {
+        console.log('move_node', data);
+    });
+    
+    $(treeSelector).bind('copy_node.jstree', function (e, data) {
+        helper.copyNodeData(data.old_instance, data.original, data.new_instance, data.node, true);
+        console.log('copy_node', data);
+        return true;
     });
 
     $(treeSelector).bind('select_node.jstree', function (e, data) {
-        console.log(data);
+        console.log('select_node', data);
     });
 };
 

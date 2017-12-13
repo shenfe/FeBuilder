@@ -57,7 +57,7 @@ const init = function (el) {
     });
 
     $(treeSelector).bind('select_node.jstree', function (e, data) {
-        console.log(data);
+        console.log('select_node', data);
     });
 
     update();

@@ -35,8 +35,18 @@ const input = inputs => {
     return Promise.resolve(result);
 };
 
+const copyNodeData = (fromtree, from, totree, to, recurse) => {
+    to.data = $.extend(true, {}, from.data);
+    if (from && from.children_d && recurse) {
+        for (let i = 0, j = from.children_d.length; i < j; i++) {
+            copyNodeData(fromtree, fromtree.get_node(from.children_d[i]), totree, totree.get_node(to.children_d[i]), recurse);
+        }
+    }
+};
+
 module.exports = {
     get,
     post,
-    input
+    input,
+    copyNodeData
 };
