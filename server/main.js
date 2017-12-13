@@ -292,12 +292,11 @@ router.post(API.apis.save, async function (ctx, next) {
     }
     // console.log(doc);
 
-    await dbProjAuth.put({
+    await dbProjAuth.put(Object.assign(data, {
         name: projname,
-        content: data.content,
         _id: doc._id,
         _rev: doc._rev,
-    }).then(res => {
+    })).then(res => {
         console.log(res);
         ctx.status = 200;
         ctx.body = {

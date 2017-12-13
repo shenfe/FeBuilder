@@ -1,12 +1,13 @@
 class Project {
     constructor({ tree, style, script, time, title, user } = {}) {
         tree = tree || {};
-        this.tree = JSON.parse(JSON.stringify(tree));
+        this.content = JSON.parse(JSON.stringify(tree));
         this.style = style;
         this.script = script;
         this.time = time || Date.now();
         this.title = title;
         this.user = user;
+        this.name = undefined;
     }
     updateTitle(title) {
         this.title = title;
@@ -14,6 +15,11 @@ class Project {
     updateTime() {
         this.time = Date.now();
     }
+    updateName(v) {
+        this.name = v;
+    }
 }
 
-module.exports = Project;
+const proj = new Project();
+
+module.exports = proj;

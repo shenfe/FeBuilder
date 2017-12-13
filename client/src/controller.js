@@ -6,6 +6,8 @@ const { get, post, input } = require('./helper');
 
 const cookies = require('./const').cookies;
 
+const __project = require('./model/project');
+
 const checkStatus = () => {
     let token = jscookie.get(cookies.token);
     let isValid = _ => (_ && _ !== '' && _ !== 'null');
@@ -51,6 +53,8 @@ const openProj = async (omitted) => {
             if (data.msg === 'success') {
                 if (!omitted) window.location.reload();
                 else {
+                    let projData = data.data;
+                    Object.assign(__project, projData);
                     return data;
                 }
             } else {
@@ -107,9 +111,9 @@ const uploadFile = async (file, options) => {
 };
 
 const saveProj = async (treedata) => {
-    return post('save', {
-        content: require('./view/treeview').json()
-    })
+    __project.content = require('./view/treeview').json();
+    __project.updateTime();
+    return post('save', __project)
         .then(data => {
             if (data.msg === 'success') {
                 console.log(data);
