@@ -1,11 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 
+const readFile = absFilePath => {
+    if (!fs.existsSync(absFilePath)) return null;
+    let re = null;
+    try {
+        re = fs.readFileSync(absFilePath, 'utf8');
+    } catch (e) {
+    }
+    return re;
+};
+
 const readData = absFilePath => {
     let data;
     try {
         data = fs.existsSync(absFilePath) ?
-            JSON.parse(read(absFilePath)) :
+            JSON.parse(readFile(absFilePath)) :
             {};
     } catch (e) {
         data = {};
@@ -87,6 +97,7 @@ const newFileName = filename => {
 };
 
 module.exports = {
+    readFile,
     readData,
     readDir,
     ensureDir,

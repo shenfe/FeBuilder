@@ -34,7 +34,7 @@ const uploadStorage = multer.diskStorage({
         let filename = file.originalname;
         while (fs.existsSync(path.resolve(__dirname, `${uploadDir}/${projname}/${filename}`))) {
             filename = util.newFileName(filename);
-            console.log(filename);
+            // console.log(filename);
         }
         cb(null, filename);
     }
@@ -139,7 +139,7 @@ router.post(API.apis.open, async function (ctx, next) {
         }
     })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             ctx.status = 200;
             if (res.docs.length) {
                 setClientCookie(ctx, {
@@ -206,7 +206,7 @@ router.post(API.apis.create, async function (ctx, next) {
         }
     })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.docs.length) {
                 ctx.status = 200;
                 ctx.body = {
@@ -218,7 +218,7 @@ router.post(API.apis.create, async function (ctx, next) {
                     name: projname,
                     password: data.password
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     setClientCookie(ctx, {
                         projid: projname,
                         token: md5(projname)
@@ -255,7 +255,7 @@ router.post(API.apis.create, async function (ctx, next) {
 router.post(API.apis.save, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     let data = ctx.request.body;
-    console.log('save project with data: ', data);
+    // console.log('save project with data: ', data);
 
     let projname = ctx.cookies.get(cookies.projid);
     if (!projname) {
@@ -274,7 +274,7 @@ router.post(API.apis.save, async function (ctx, next) {
                 name: projname
             }
         }).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.docs.length) {
                 return res.docs[0];
             } else {
@@ -298,7 +298,7 @@ router.post(API.apis.save, async function (ctx, next) {
         _id: doc._id,
         _rev: doc._rev,
     })).then(res => {
-        console.log(res);
+        // console.log(res);
         ctx.status = 200;
         ctx.body = {
             msg: 'success',
@@ -323,7 +323,7 @@ router.get(API.apis.components, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     ctx.status = 200;
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, '../base/preset'), {
+        data: util.readDir(path.resolve(__dirname, '../base/component'), {
             data: function (dirPath) {
                 let idata = uiInterface.parse(dirPath, {
                     converter: function (varArr) {
@@ -371,6 +371,26 @@ router.get(API.apis.fileassets, async function (ctx, next) {
         data: util.readDir(path.resolve(__dirname, `${uploadDir}/${projname}`), {
             onlyDir: false
         }),
+        msg: 'success'
+    };
+    await next();
+});
+
+/**
+ * API: preview presets
+ */
+router.get(API.apis.presetdevices, async function (ctx, next) {
+    ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    ctx.status = 200;
+    ctx.body = {
+        data: util.readDir(path.resolve(__dirname, `../base/device`), {
+            onlyDir: false
+        })
+            .filter(v => /\.html$/.test(v))
+            .reduce((pre, nex) => {
+                pre[nex.replace(/\.html$/, '')] = util.readFile(path.resolve(__dirname, `../base/device/${nex}`));
+                return pre;
+            }, {}),
         msg: 'success'
     };
     await next();

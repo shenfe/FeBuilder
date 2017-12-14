@@ -80,7 +80,12 @@ const json = () => {
     return $(treeSelector).jstree('get_json');
 };
 
+const html = () => {
+    return 'html here'
+};
+
 module.exports = {
     init,
-    json
+    json,
+    html
 };

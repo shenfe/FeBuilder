@@ -113,3 +113,18 @@ body {
 
 @import './view/setting.scss';
 @import './view/preview.scss';
+@import './view/editor.scss';
+
+.btn-normal {
+    float: right;
+    border: 1px #999 solid;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    margin: 4px 0 4px 8px;
+    cursor: pointer;
+}
+.btn-normal:hover {
+    background: #666;
+}

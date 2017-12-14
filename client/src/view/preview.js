@@ -2,27 +2,89 @@ let target;
 
 const edit = require('./editor').edit;
 
+const { get, post } = require('../helper');
+
+const controller = require('../controller');
+
 const __project = require('../model/project');
 
 const targetSelector = '#preview-inner';
 
-const update = html => {
+const vte = require('velocity-template-engine');
+
+const update = _ => {
+    const iframeStyle = {};
+    switch (curDevice) {
+        case 'mobile':
+            Object.assign(iframeStyle, {
+                width: '375px',
+                height: '667px',
+                margin: '16px auto',
+                display: 'block',
+                border: '1px #ccc solid'
+            });
+            break;
+        default:
+            break;
+    }
+    let html = vTree.html();
     let iframe = document.createElement('iframe');
-    html = `<body>${html}</body>`;
-    iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+    iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(
+        vte.render(presetDevices[curDevice], {
+            style: __project.style,
+            body: html
+        })
+    );
+    $(iframe).css(iframeStyle);
     $(targetSelector).empty().append(iframe);
 };
 
 window.previewHtml = update;
 
+const vTree = require('./treeview');
+
+let presetDevices;
+let curDevice;
+
 const init = function (el) {
     target = el;
 
-    $(el).find('.ctrl-preset').click(async function () {
-        __project.style = await edit(__project.style);
+    if (controller.checkStatus()) {
+        get('presetdevices').then(data => {
+            console.log('presetdevices', data);
+            presetDevices = data.data;
+            $(el).find('#preset-device')
+                .html(Object.keys(presetDevices).map(v => `<option value=${v}>${v}</option>`).join(''))
+                .change(function () {
+                    // let v = $(this).find('option:selected').text();
+                    document.dispatchEvent(new CustomEvent(`preset-device-change`, {
+                        detail: $(this).val()
+                    }));
+                })
+                .val(Object.keys(presetDevices).pop())
+                .change();
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+
+    document.addEventListener('preset-device-change', function (e) {
+        curDevice = e.detail;
+        update();
     });
 
-    update('ready');
+    document.addEventListener('preview-update', function (e) {
+        update();
+    });
+
+    $(el).find('.ctrl-preset').click(function () {
+        edit(__project.style, 'css')
+            .then(text => {
+                __project.style = text;
+                document.dispatchEvent(new CustomEvent(`preview-update`));
+            })
+            .catch(err => console.log(err));
+    });
 };
 
 module.exports = {

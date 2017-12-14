@@ -70,10 +70,7 @@
                         <span class="label">Preview</span>
                         <div class="right-ctrls">
                             <button class="ctrl-r ctrl-preset">preset</button>
-                            <select class="ctrl-r">
-                                <option value="mobile">mobile</option>
-                                <option value="desktop">desktop</option>
-                            </select>
+                            <select id="preset-device" class="ctrl-r"></select>
                             <span class="ctrl ctrl-update ion-android-refresh"></span>
                         </div>
                     </div>
@@ -82,7 +79,13 @@
             </div>
         </div>
         <!-- <div id="status" class="show-as-auth"></div> -->
-        <div id="editor"><div id="editor-inner"></div></div>
+        <div id="editor">
+            <div id="editor-ctrls">
+                <span class="btn-normal ctrl-save">Save</span>
+                <span class="btn-normal ctrl-close">Close</span>
+            </div>
+            <div id="editor-inner"></div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 </body>

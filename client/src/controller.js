@@ -55,6 +55,7 @@ const openProj = async (omitted) => {
                 else {
                     let projData = data.data;
                     Object.assign(__project, projData);
+                    document.dispatchEvent(new CustomEvent(`preview-update`));
                     return data;
                 }
             } else {

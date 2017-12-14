@@ -27,7 +27,8 @@
     "pouchdb": "^6.3.4",
     "pouchdb-find": "^6.3.4",
     "shelljs": "^0.7.8",
-    "ui-interface": "^0.1.4"
+    "ui-interface": "^0.1.4",
+    "velocity-template-engine": "^1.1.1"
   },
   "devDependencies": {
     "cross-env": "^5.1.1",
