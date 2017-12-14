@@ -13,7 +13,8 @@ const apis = {
     fileassets: '/asset/file',
     filethumb: '/file/thumb',
     presetdevices: '/preset/device',
-    upload: '/upload'
+    upload: '/upload',
+    html: '/data/html'
 };
 
 module.exports = {

@@ -80,8 +80,29 @@ const json = () => {
     return $(treeSelector).jstree('get_json');
 };
 
-const html = () => {
-    return 'html here'
+const tree = () => {
+    let roots = json();
+    if (!(roots instanceof Array)) return Promise.reject('Not array for tree.');
+    let trans = node => {
+        let data = JSON.parse(JSON.stringify(node.data));
+        node.children.forEach((child, i) => {
+            data.slots[i].nodes = child.children.map(trans);
+        });
+        if (data.style && data.style.vars instanceof Object) {
+            data.style.vars = helper.varsDecoder(data.style.vars);
+        }
+        return data;
+    };
+    return controller.html(roots.map(trans));
+};
+
+const html = async () => {
+    try {
+        let re = await tree();
+        return re;
+    } catch (e) {
+        return {};
+    }
 };
 
 module.exports = {

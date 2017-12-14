@@ -12,7 +12,7 @@ const targetSelector = '#preview-inner';
 
 const vte = require('velocity-template-engine');
 
-const update = _ => {
+const update = async _ => {
     const iframeStyle = {};
     switch (curDevice) {
         case 'mobile':
@@ -27,11 +27,11 @@ const update = _ => {
         default:
             break;
     }
-    let html = vTree.html();
+    let { style, html } = await vTree.html();
     let iframe = document.createElement('iframe');
     iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(
         vte.render(presetDevices[curDevice], {
-            style: __project.style,
+            style: __project.style + style,
             body: html
         })
     );

@@ -316,6 +316,20 @@ router.post(API.apis.save, async function (ctx, next) {
     await next();
 });
 
+const varsEncoder = function (varArr) {
+    let re = {};
+    varArr.forEach(v => {
+        let obj = {};
+        re[v.name] = obj;
+        obj._type = (function (p) {
+            // TODO
+            return 'text';
+        })(v.name);
+        obj._value = v.value;
+    });
+    return re;
+};
+
 /**
  * API: components
  */
@@ -326,19 +340,7 @@ router.get(API.apis.components, async function (ctx, next) {
         data: util.readDir(path.resolve(__dirname, '../base/component'), {
             data: function (dirPath) {
                 let idata = uiInterface.parse(dirPath, {
-                    converter: function (varArr) {
-                        let re = {};
-                        varArr.forEach(v => {
-                            let obj = {};
-                            re[v.name] = obj;
-                            obj._type = (function (p) {
-                                // TODO
-                                return 'text';
-                            })(v.name);
-                            obj._value = v.value;
-                        });
-                        return re;
-                    }
+                    converter: varsEncoder
                 });
                 // console.log(dirPath, idata);
                 if (idata && idata.slots && idata.slots.length) idata.type = 'slotter';
@@ -419,6 +421,29 @@ router.get(API.apis.filethumb, async function (ctx, next) {
     console.log('thumbFilePath', thumbFilePath);
     ctx.attachment(thumbFilePath);
     ctx.body = util.readData(thumbFilePath, true);
+});
+
+/**
+ * API: tree to html
+ */
+router.post(API.apis.html, function (ctx, next) {
+    let treedata = ctx.request.body;
+    console.log('treedata', treedata);
+    ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    ctx.status = 200;
+    ctx.body = {
+        msg: 'success',
+        data: uiInterface.stringify({
+            html: '<slot>body</slot>',
+            slots: [
+                {
+                    name: 'body',
+                    nodes: treedata,
+                    text: '<slot>body</slot>'
+                }
+            ]
+        })
+    };
 });
 
 app

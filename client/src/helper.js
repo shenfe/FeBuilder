@@ -44,9 +44,22 @@ const copyNodeData = (fromtree, from, totree, to, recurse) => {
     }
 };
 
+const varsDecoder = function (varObj) {
+    let re = [];
+    for (let p in varObj) {
+        if (!varObj.hasOwnProperty(p)) continue;
+        re.push({
+            name: p,
+            value: varObj[p]._value
+        });
+    }
+    return re;
+};
+
 module.exports = {
     get,
     post,
     input,
-    copyNodeData
+    copyNodeData,
+    varsDecoder
 };

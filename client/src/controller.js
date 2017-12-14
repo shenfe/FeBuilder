@@ -55,7 +55,9 @@ const openProj = async (omitted) => {
                 else {
                     let projData = data.data;
                     Object.assign(__project, projData);
-                    document.dispatchEvent(new CustomEvent(`preview-update`));
+                    window.setTimeout(function () {
+                        document.dispatchEvent(new CustomEvent(`preview-update`));
+                    }, 1000);
                     return data;
                 }
             } else {
@@ -111,7 +113,7 @@ const uploadFile = async (file, options) => {
         });
 };
 
-const saveProj = async (treedata) => {
+const saveProj = async () => {
     __project.content = require('./view/treeview').json();
     __project.updateTime();
     return post('save', __project)
@@ -127,11 +129,27 @@ const saveProj = async (treedata) => {
         });
 };
 
+const transTreeToHtml = async (treedata) => {
+    return post('html', treedata)
+        .then(data => {
+            if (data.msg === 'success') {
+                console.log('transTreeToHtml', data);
+                return data.data;
+            } else {
+                alert(`${data.msg}: ${data.desc}`);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 module.exports = {
     checkStatus: checkStatus,
     close: closeProj,
     open: openProj,
     create: createProj,
     upload: uploadFile,
-    save: saveProj
+    save: saveProj,
+    html: transTreeToHtml
 };
