@@ -137,5 +137,17 @@ body {
 
 #fileassets.jstree-default .jstree-themeicon-custom {
     background-size: 80% !important;
-    background-position: top 2px center !important;
+    background-position: center center !important;
+}
+
+.jstree-default .jstree-node {
+    margin-left: 16px !important;
+}
+
+.jstree-default > .jstree-container-ul > .jstree-node {
+    margin-left: 0 !important;
+}
+
+.jstree-default .jstree-icon:empty {
+    width: 16px !important;
 }

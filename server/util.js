@@ -45,7 +45,7 @@ const readDir = (absDirPath, {
         return null;
     }
     let folders = fs.readdirSync(absDirPath)
-        .filter(file => onlyDir ? fs.lstatSync(path.resolve(absDirPath, file)).isDirectory() : true)
+        .filter(file => file[0] !== '.' && (onlyDir ? fs.lstatSync(path.resolve(absDirPath, file)).isDirectory() : true))
         .map(folder => path.basename(folder));
     let result = [];
     folders.forEach(f => {

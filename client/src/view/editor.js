@@ -36,8 +36,3 @@ module.exports = {
     init,
     edit
 };
-
-// window.setTimeout(async function () {
-//     let data = await edit('test');
-//     console.log(data);
-// }, 2000);

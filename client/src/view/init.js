@@ -1,4 +1,5 @@
 require('jstree');
+require('../common/jstree-3.3.4/style.min.css');
 
 require('../common/flex-panel');
 
