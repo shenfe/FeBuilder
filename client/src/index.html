@@ -17,6 +17,7 @@
             <span id="op-undo" class="op-item show-as-auth">Undo</span>
             <span id="op-redo" class="op-item show-as-auth">Redo</span>
             <span id="op-save" class="op-item show-as-auth">Save</span>
+            <span id="op-export" class="op-item show-as-auth">Export</span>
         </div>
         <div id="notice"></div>
         <div id="main" class="show-as-auth">
@@ -32,7 +33,7 @@
                     </div>
                     <div id="components" class="content"></div>
                 </div>
-                <div id="filesssets-outer" class="flex-panel" component-name="fileassets">
+                <div id="fileassets-outer" class="flex-panel" component-name="fileassets">
                     <div class="toggler">
                         <span class="label">Files</span>
                         <div class="right-ctrls">
@@ -69,6 +70,8 @@
                     <div class="toggler">
                         <span class="label">Preview</span>
                         <div class="right-ctrls">
+                            <button class="ctrl-r ctrl-preset">preset</button>
+                            <select id="preset-device" class="ctrl-r"></select>
                             <span class="ctrl ctrl-update ion-android-refresh"></span>
                         </div>
                     </div>
@@ -77,7 +80,13 @@
             </div>
         </div>
         <!-- <div id="status" class="show-as-auth"></div> -->
-        <div id="editor"><div id="editor-inner"></div></div>
+        <div id="editor">
+            <div id="editor-ctrls">
+                <span class="btn-normal ctrl-save">Save</span>
+                <span class="btn-normal ctrl-close">Close</span>
+            </div>
+            <div id="editor-inner"></div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 </body>

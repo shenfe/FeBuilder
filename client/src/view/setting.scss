@@ -1,0 +1,17 @@
+#setting {
+    .content div {
+        padding: 2px 4px;
+    }
+    label {
+        padding: 0 4px 0 0;
+        font-size: 12px;
+        display: block;
+        margin-bottom: 4px;
+    }
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+}

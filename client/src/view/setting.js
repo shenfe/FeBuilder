@@ -10,7 +10,7 @@ const init = function (el) {
     document.addEventListener(`treenode-select`, function (e) {
         console.log('treenode-select event:', e.detail);
         $(targetSelector).empty();
-        $(targetSelector)[0].appendChild(fromform(e.detail.style.vars));
+        e.detail.style && $(targetSelector).append(fromform(e.detail.style.vars));
     });
 };
 

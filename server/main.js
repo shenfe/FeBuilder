@@ -34,7 +34,7 @@ const uploadStorage = multer.diskStorage({
         let filename = file.originalname;
         while (fs.existsSync(path.resolve(__dirname, `${uploadDir}/${projname}/${filename}`))) {
             filename = util.newFileName(filename);
-            console.log(filename);
+            // console.log(filename);
         }
         cb(null, filename);
     }
@@ -51,6 +51,7 @@ const { validation, cookies } = require('../client/src/const');
 
 const PouchDB = require('pouchdb');
 PouchDB.plugin(require('pouchdb-find'));
+util.ensureDir(path.resolve(__dirname, '../db'));
 
 const dbProjAuth = new PouchDB('db/proj_auth');
 // const dbProjInfo = new PouchDB('db/proj_info');
@@ -138,7 +139,7 @@ router.post(API.apis.open, async function (ctx, next) {
         }
     })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             ctx.status = 200;
             if (res.docs.length) {
                 setClientCookie(ctx, {
@@ -205,7 +206,7 @@ router.post(API.apis.create, async function (ctx, next) {
         }
     })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.docs.length) {
                 ctx.status = 200;
                 ctx.body = {
@@ -217,7 +218,7 @@ router.post(API.apis.create, async function (ctx, next) {
                     name: projname,
                     password: data.password
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     setClientCookie(ctx, {
                         projid: projname,
                         token: md5(projname)
@@ -254,7 +255,7 @@ router.post(API.apis.create, async function (ctx, next) {
 router.post(API.apis.save, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     let data = ctx.request.body;
-    console.log('save project with data: ', data);
+    // console.log('save project with data: ', data);
 
     let projname = ctx.cookies.get(cookies.projid);
     if (!projname) {
@@ -273,7 +274,7 @@ router.post(API.apis.save, async function (ctx, next) {
                 name: projname
             }
         }).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.docs.length) {
                 return res.docs[0];
             } else {
@@ -297,7 +298,7 @@ router.post(API.apis.save, async function (ctx, next) {
         _id: doc._id,
         _rev: doc._rev,
     })).then(res => {
-        console.log(res);
+        // console.log(res);
         ctx.status = 200;
         ctx.body = {
             msg: 'success',
@@ -322,7 +323,7 @@ router.get(API.apis.components, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     ctx.status = 200;
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, '../base/preset'), {
+        data: util.readDir(path.resolve(__dirname, '../base/component'), {
             data: function (dirPath) {
                 let idata = uiInterface.parse(dirPath, {
                     converter: function (varArr) {
@@ -339,7 +340,8 @@ router.get(API.apis.components, async function (ctx, next) {
                         return re;
                     }
                 });
-                console.log(dirPath, idata);
+                // console.log(dirPath, idata);
+                if (idata && idata.slots && idata.slots.length) idata.type = 'slotter';
                 return idata;
             }
         }),
@@ -365,13 +367,53 @@ router.get(API.apis.fileassets, async function (ctx, next) {
     }
 
     ctx.status = 200;
+    let dirName = path.resolve(__dirname, `${uploadDir}/${projname}`);
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, `${uploadDir}/${projname}`), {
-            onlyDir: false
+        data: util.readDir(dirName, {
+            onlyDir: false,
+            icon: filepath => {
+                return API.apis.filethumb + '?file=' + encodeURIComponent(path.relative(dirName, filepath));
+            }
         }),
         msg: 'success'
     };
     await next();
+});
+
+/**
+ * API: preview presets
+ */
+router.get(API.apis.presetdevices, async function (ctx, next) {
+    ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
+    ctx.status = 200;
+    ctx.body = {
+        data: util.readDir(path.resolve(__dirname, `../base/device`), {
+            onlyDir: false
+        })
+            .filter(v => /\.html$/.test(v))
+            .reduce((pre, nex) => {
+                pre[nex.replace(/\.html$/, '')] = util.readFile(path.resolve(__dirname, `../base/device/${nex}`));
+                return pre;
+            }, {}),
+        msg: 'success'
+    };
+    await next();
+});
+
+const { thumbpath } = require('./helper');
+
+/**
+ * API: file thumb
+ */
+router.get(API.apis.filethumb, async function (ctx, next) {
+    let { file } = ctx.request.query;
+    let projname = ctx.cookies.get(cookies.projid);
+    let thumbFilePath = await thumbpath(path.resolve(__dirname, `${uploadDir}/${projname}/${file}`));
+    ctx.type = util.contentType(file.split('.').pop());
+    ctx.status = 200;
+    console.log('thumbFilePath', thumbFilePath);
+    ctx.attachment(thumbFilePath);
+    ctx.body = util.readData(thumbFilePath, true);
 });
 
 app

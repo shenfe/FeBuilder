@@ -1,11 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
-const readData = absFilePath => {
+const readFile = absFilePath => {
+    if (!fs.existsSync(absFilePath)) return null;
+    let re = null;
+    try {
+        re = fs.readFileSync(absFilePath, 'utf8');
+    } catch (e) {
+    }
+    return re;
+};
+
+const readData = (absFilePath, raw) => {
+    if (raw) {
+        return fs.existsSync(absFilePath) ? fs.readFileSync(absFilePath) : null;
+    }
     let data;
     try {
         data = fs.existsSync(absFilePath) ?
-            JSON.parse(read(absFilePath)) :
+            JSON.parse(readFile(absFilePath)) :
             {};
     } catch (e) {
         data = {};
@@ -22,7 +35,8 @@ const isEmpty = obj => {
 
 const readDir = (absDirPath, {
     onlyDir,
-    data
+    data,
+    icon
 } = {}) => {
     onlyDir = onlyDir === false ? false : true;
     try {
@@ -37,12 +51,15 @@ const readDir = (absDirPath, {
     folders.forEach(f => {
         let rd = readDir(path.resolve(absDirPath, f), {
             onlyDir,
-            data
+            data,
+            icon
         });
-        result.push(rd === null ? f : {
+        let isFileInsteadOfDir = rd === null;
+        result.push((isFileInsteadOfDir && !icon) ? f : {
             text: f,
             children: rd,
-            data: data ? data(path.resolve(absDirPath, f), f) : null
+            data: data ? data(path.resolve(absDirPath, f), f) : null,
+            icon: (isFileInsteadOfDir && icon) ? icon(path.resolve(absDirPath, f), f) : null
         });
     });
     return result;
@@ -55,6 +72,7 @@ const ensureDir = dir => {
         if (!dirs.length) break;
         p.push(dirs.shift());
         let d = p.join('/');
+        if (d === '') continue;
         if (fs.existsSync(d) && fs.statSync(d).isDirectory()) continue;
         fs.mkdirSync(d);
     }
@@ -85,10 +103,25 @@ const newFileName = filename => {
     }
 };
 
+const contentType = fileformat => {
+    switch (fileformat) {
+        case 'jpg':
+        case 'jpeg':
+            return 'image/jpeg';
+        case 'gif':
+        case 'png':
+            return `image/${fileformat}`
+        default:
+            return 'text/html';
+    }
+}
+
 module.exports = {
+    readFile,
     readData,
     readDir,
     ensureDir,
     parseCookies,
-    newFileName
+    newFileName,
+    contentType
 };
