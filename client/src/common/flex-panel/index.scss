@@ -19,12 +19,30 @@ $color3: #666;
             display: flex;
             .label {
                 flex: 1;
+                text-indent: 4px;
+                font-size: 12px;
+                line-height: 20px;
             }
             .right-ctrls {
                 display: flex;
                 cursor: pointer;
                 .ctrl {
                     padding: 4px;
+                }
+                .ctrl-r {
+                    background-color: rgba(255, 255, 255, .0);
+                    border: 1px #ddd solid;
+                    border-radius: 2px;
+                    color: #fff;
+                    cursor: pointer;
+                    margin-right: 4px;
+                    padding: 0 6px;
+                }
+                .ctrl-r:hover {
+                    background-color: rgba(255, 255, 255, .4);
+                }
+                .ctrl-r option {
+                    color: #000;
                 }
             }
             .ion-android-add {

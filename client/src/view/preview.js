@@ -20,7 +20,7 @@ const update = _ => {
                 width: '375px',
                 height: '667px',
                 margin: '16px auto',
-                display: 'block',
+                // display: 'block',
                 border: '1px #ccc solid'
             });
             break;
