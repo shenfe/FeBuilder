@@ -367,9 +367,13 @@ router.get(API.apis.fileassets, async function (ctx, next) {
     }
 
     ctx.status = 200;
+    let dirName = path.resolve(__dirname, `${uploadDir}/${projname}`);
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, `${uploadDir}/${projname}`), {
-            onlyDir: false
+        data: util.readDir(dirName, {
+            onlyDir: false,
+            icon: filepath => {
+                return API.apis.filethumb + '?file=' + encodeURIComponent(path.relative(dirName, filepath));
+            }
         }),
         msg: 'success'
     };
@@ -394,6 +398,22 @@ router.get(API.apis.presetdevices, async function (ctx, next) {
         msg: 'success'
     };
     await next();
+});
+
+const { thumbpath } = require('./helper');
+
+/**
+ * API: file thumb
+ */
+router.get(API.apis.filethumb, async function (ctx, next) {
+    let { file } = ctx.request.query;
+    let projname = ctx.cookies.get(cookies.projid);
+    let thumbFilePath = await thumbpath(path.resolve(__dirname, `${uploadDir}/${projname}/${file}`));
+    ctx.type = util.contentType(file.split('.').pop());
+    ctx.status = 200;
+    console.log('thumbFilePath', thumbFilePath);
+    ctx.attachment(thumbFilePath);
+    ctx.body = util.readData(thumbFilePath, true);
 });
 
 app

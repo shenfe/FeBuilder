@@ -11,7 +11,10 @@ const readFile = absFilePath => {
     return re;
 };
 
-const readData = absFilePath => {
+const readData = (absFilePath, raw) => {
+    if (raw) {
+        return fs.existsSync(absFilePath) ? fs.readFileSync(absFilePath) : null;
+    }
     let data;
     try {
         data = fs.existsSync(absFilePath) ?
@@ -32,7 +35,8 @@ const isEmpty = obj => {
 
 const readDir = (absDirPath, {
     onlyDir,
-    data
+    data,
+    icon
 } = {}) => {
     onlyDir = onlyDir === false ? false : true;
     try {
@@ -47,12 +51,15 @@ const readDir = (absDirPath, {
     folders.forEach(f => {
         let rd = readDir(path.resolve(absDirPath, f), {
             onlyDir,
-            data
+            data,
+            icon
         });
-        result.push(rd === null ? f : {
+        let isFileInsteadOfDir = rd === null;
+        result.push((isFileInsteadOfDir && !icon) ? f : {
             text: f,
             children: rd,
-            data: data ? data(path.resolve(absDirPath, f), f) : null
+            data: data ? data(path.resolve(absDirPath, f), f) : null,
+            icon: (isFileInsteadOfDir && icon) ? icon(path.resolve(absDirPath, f), f) : null
         });
     });
     return result;
@@ -96,11 +103,25 @@ const newFileName = filename => {
     }
 };
 
+const contentType = fileformat => {
+    switch (fileformat) {
+        case 'jpg':
+        case 'jpeg':
+            return 'image/jpeg';
+        case 'gif':
+        case 'png':
+            return `image/${fileformat}`
+        default:
+            return 'text/html';
+    }
+}
+
 module.exports = {
     readFile,
     readData,
     readDir,
     ensureDir,
     parseCookies,
-    newFileName
+    newFileName,
+    contentType
 };

@@ -23,6 +23,7 @@
     "koa-session": "^5.5.1",
     "koa-static": "^4.0.2",
     "md5": "^2.2.1",
+    "md5-file": "^3.2.3",
     "open": "0.0.5",
     "pouchdb": "^6.3.4",
     "pouchdb-find": "^6.3.4",

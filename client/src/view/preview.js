@@ -20,8 +20,8 @@ const update = _ => {
                 width: '375px',
                 height: '667px',
                 margin: '16px auto',
-                // display: 'block',
-                border: '1px #ccc solid'
+                border: '1px #ccc solid',
+                'box-shadow': '0px 0px 15px #ddd'
             });
             break;
         default:

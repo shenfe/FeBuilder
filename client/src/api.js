@@ -11,6 +11,7 @@ const apis = {
     create: '/proj/create',
     components: '/asset/component',
     fileassets: '/asset/file',
+    filethumb: '/file/thumb',
     presetdevices: '/preset/device',
     upload: '/upload'
 };

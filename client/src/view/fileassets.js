@@ -8,7 +8,7 @@ const treeSettings = {
     core: {
         themes: {
             dots: false,
-            icons: false
+            icons: true
         },
         check_callback: function (operation, node, node_parent, node_position, more) {
             return operation === 'copy_node';
