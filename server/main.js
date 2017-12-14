@@ -408,9 +408,14 @@ const { thumbpath } = require('./helper');
 router.get(API.apis.filethumb, async function (ctx, next) {
     let { file } = ctx.request.query;
     let projname = ctx.cookies.get(cookies.projid);
-    let thumbFilePath = await thumbpath(path.resolve(__dirname, `${uploadDir}/${projname}/${file}`));
-    ctx.type = util.contentType(file.split('.').pop());
     ctx.status = 200;
+    ctx.type = util.contentType(file.split('.').pop());
+    let thumbFilePath;
+    if (ctx.type.startsWith('image/')) {
+        thumbFilePath = await thumbpath(path.resolve(__dirname, `${uploadDir}/${projname}/${file}`));
+    } else {
+        thumbFilePath = path.resolve(__dirname, '../client/src/common/icon/file-unknown.png');
+    }
     console.log('thumbFilePath', thumbFilePath);
     ctx.attachment(thumbFilePath);
     ctx.body = util.readData(thumbFilePath, true);
