@@ -51,6 +51,29 @@ const init = function (el) {
 
     $(treeSelector).bind('move_node.jstree', function (e, data) {
         console.log('move_node', data);
+        document.dispatchEvent(new CustomEvent(`preview-update`));
+    });
+
+    $(treeSelector).bind('delete_node.jstree', function (e, data) {
+        console.log('delete_node', data);
+        document.dispatchEvent(new CustomEvent(`preview-update`));
+    });
+
+    $(treeSelector).bind('rename_node.jstree', function (e, data) {
+        console.log('rename_node', data);
+        document.dispatchEvent(new CustomEvent(`preview-update`));
+    });
+
+    $(treeSelector).bind('create_node.jstree', function (e, data) {
+        console.log('create_node', data);
+        document.dispatchEvent(new CustomEvent(`preview-update`));
+    });
+
+    $(treeSelector).bind('select_node.jstree', function (e, data) {
+        console.log('select_node', data);
+        document.dispatchEvent(new CustomEvent(`treenode-select`, {
+            detail: data.node.data
+        }));
     });
 
     $(treeSelector).bind('copy_node.jstree', function (e, data) {
@@ -70,17 +93,6 @@ const init = function (el) {
             });
         }
         return true;
-    });
-
-    $(treeSelector).bind('select_node.jstree', function (e, data) {
-        console.log('select_node', data);
-        document.dispatchEvent(new CustomEvent(`treenode-select`, {
-            detail: data.node.data
-        }));
-    });
-
-    $(treeSelector).bind('create_node.jstree', function (e, data) {
-        console.log('create_node', data);
     });
 };
 

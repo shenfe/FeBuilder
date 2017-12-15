@@ -12,6 +12,10 @@ const init = function (el) {
         $(targetSelector).empty();
         e.detail.style && $(targetSelector).append(fromform(e.detail.style.vars));
     });
+
+    $(targetSelector).on('change', 'input', function () {
+        document.dispatchEvent(new CustomEvent(`preview-update`));
+    });
 };
 
 module.exports = {
