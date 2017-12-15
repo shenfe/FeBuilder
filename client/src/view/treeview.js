@@ -29,6 +29,10 @@ const render = data => {
             'contextmenu'
         ]
     });
+
+    window.setTimeout(function () {
+        $(treeSelector).find('.jstree-anchor.jstree-clicked').click();
+    }, 200);
 };
 
 const update = () => {
@@ -73,6 +77,10 @@ const init = function (el) {
         document.dispatchEvent(new CustomEvent(`treenode-select`, {
             detail: data.node.data
         }));
+    });
+
+    $(treeSelector).bind('create_node.jstree', function (e, data) {
+        console.log('create_node', data);
     });
 };
 

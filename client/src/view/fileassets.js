@@ -2,6 +2,8 @@ const { get, post } = require('../helper');
 
 const controller = require('../controller');
 
+const treeSelector = '#fileassets';
+
 let target;
 
 const treeSettings = {
@@ -27,10 +29,10 @@ let treeInitialized = false;
 const render = data => {
     if (!treeInitialized) {
         treeInitialized = true;
-        $('#fileassets').jstree(treeSettings);
+        $(treeSelector).jstree(treeSettings);
     }
-    $('#fileassets').jstree(true).settings.core.data = data;
-    $('#fileassets').jstree(true).refresh();
+    $(treeSelector).jstree(true).settings.core.data = data;
+    $(treeSelector).jstree(true).refresh();
 };
 
 let lastUpdateTime;
@@ -65,7 +67,7 @@ const init = function (el) {
 
     update();
 
-    uploader($('#fileassets')[0], {
+    uploader($(treeSelector)[0], {
         apiUrl: API.apis.upload,
         data: {
             test: 'fileupload'
@@ -82,6 +84,11 @@ const init = function (el) {
             console.log('onprogress', v);
         },
         onread: function () { console.log('onread') }
+    });
+
+    $(treeSelector).bind('select_node.jstree', function (e, data) {
+        console.log('select_node', data);
+        $('#fileasset-detail').html(`<div><img src="${data.node.icon}"></div>`);
     });
 };
 

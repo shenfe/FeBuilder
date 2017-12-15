@@ -56,8 +56,12 @@ const init = function (el) {
         update();
     });
 
-    $(treeSelector).bind('select_node.jstree', function (e, data) {
-        console.log('select_node', data);
+    $(treeSelector).bind('hover_node.jstree', function (e, data) {
+        if (data.node.a_attr.id) {
+            let target = $('#' + data.node.a_attr.id)[0];
+            if (!target.title)
+                target.title = `${data.node.data.html}\n${data.node.data.style.body || ''}`.trim();
+        }
     });
 
     update();
