@@ -50,7 +50,8 @@ const varsDecoder = function (varObj) {
         if (!varObj.hasOwnProperty(p)) continue;
         re.push({
             name: p,
-            value: varObj[p]._value
+            type: varObj[p].type,
+            desc: varObj[p].value
         });
     }
     return re;

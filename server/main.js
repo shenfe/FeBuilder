@@ -249,6 +249,32 @@ router.post(API.apis.create, async function (ctx, next) {
     await next();
 });
 
+const fixInterfaceData = data => {
+    let nodeArr = data.content;
+    const objToArr = obj => {
+        if (!('0' in obj)) return obj;
+        let a = [];
+        let i = 0;
+        while (i in obj) {
+            a.push(obj[i]);
+            i++;
+        }
+        return a;
+    };
+    const traverse = (obj, path) => {
+        for (let p in obj) {
+            if (!obj.hasOwnProperty(p)) continue;
+            if (!obj[p] || typeof obj[p] !== 'object') continue;
+            if (p === '_options') {
+                obj[p] = objToArr(obj[p]);
+                continue;
+            }
+            traverse(obj[p], path.slice(0).concat(p));
+        }
+    };
+    nodeArr.forEach(node => traverse(node, []));
+};
+
 /**
  * API: save the project
  */
@@ -293,6 +319,8 @@ router.post(API.apis.save, async function (ctx, next) {
     }
     // console.log(doc);
 
+    fixInterfaceData(data);
+
     await dbProjAuth.put(Object.assign(data, {
         name: projname,
         _id: doc._id,
@@ -320,15 +348,33 @@ const varsEncoder = function (varArr) {
     let re = {};
     varArr.forEach(v => {
         let obj = {};
-        re[v.name] = obj;
-        obj._type = (function (p) {
-            // TODO
-            return 'text';
-        })(v.name);
-        obj._value = v.value;
+        re[v.name] = {
+            type: v.type,
+            value: obj
+        };
+        // obj._type = (function (p) {
+        //     return 'text';
+        // })(v.name);
+        // obj._value = v.value;
+        Object.assign(obj, v.desc);
     });
     return re;
 };
+
+function getComponents() {
+    return util.readDir(path.resolve(__dirname, '../base/component'), {
+        data: function (dirPath) {
+            let idata = uiInterface.parse(dirPath, {
+                converter: varsEncoder
+            });
+            // console.log(dirPath, idata);
+            if (idata && idata.slots && idata.slots.length) idata.type = 'slotter';
+            return idata;
+        }
+    })
+}
+
+module.exports.getComponents = getComponents;
 
 /**
  * API: components
@@ -337,16 +383,7 @@ router.get(API.apis.components, async function (ctx, next) {
     ctx.response.header['Content-Type'] = 'application/json; charset=utf-8';
     ctx.status = 200;
     ctx.body = {
-        data: util.readDir(path.resolve(__dirname, '../base/component'), {
-            data: function (dirPath) {
-                let idata = uiInterface.parse(dirPath, {
-                    converter: varsEncoder
-                });
-                // console.log(dirPath, idata);
-                if (idata && idata.slots && idata.slots.length) idata.type = 'slotter';
-                return idata;
-            }
-        }),
+        data: getComponents(),
         msg: 'success'
     };
     await next();
