@@ -1,0 +1,144 @@
+.search-focus-wap {
+    position: relative;
+    height: 44px;
+    background: rgb(248, 248, 248) none repeat scroll 0% 0% / auto padding-box border-box;
+    margin: 14px 10px 0px;
+    padding: 0px 74px 0px 80px;
+    border: 1px solid rgb(238, 238, 238);
+    border-radius: 2px;
+    border-collapse: separate;
+    border-spacing: 0px 0px;
+    color: rgb(51, 51, 51);
+    text-align: start;
+    text-indent: 0px;
+    cursor: auto;
+    font: normal normal 400 normal 16px / 24px "PingFang SC", Arial, 微软雅黑, Helvetica, sans-serif;
+    letter-spacing: normal;
+    list-style: disc outside none;
+    visibility: visible;
+    text-decoration: none solid rgb(51, 51, 51);
+    white-space: normal;
+    word-break: normal;
+    word-wrap: normal;
+}
+.search-focus-wap .search-focus-wap-div1 {
+    position: absolute;
+    width: 62px;
+    height: 44px;
+    top: 1px;
+    left: 0px;
+    padding: 0px 20px 0px 0px;
+    color: rgb(102, 102, 102);
+    text-align: center;
+    font: normal normal 400 normal 16px / 44px "PingFang SC", Arial, 微软雅黑, Helvetica, sans-serif;
+    text-decoration: none solid rgb(102, 102, 102);
+}
+.search-focus-wap .search-focus-wap-span1 {
+    display: inline-block;
+    text-decoration: none solid rgb(102, 102, 102);
+}
+.search-focus-wap .search-focus-wap-span2 {
+    display: block;
+    position: absolute;
+    width: 8px;
+    height: 4px;
+    top: 19px;
+    left: 62px;
+    background: rgba(0, 0, 0, 0) url("https://t1.focus-res.cn/front-h5/module/loupan-filter/img/arrow-down.png?20180103154306") no-repeat scroll 50% 50% / 8px 4px padding-box border-box;
+    text-decoration: none solid rgb(102, 102, 102);
+    transform: matrix(-1, -1.22465e-16, 1.22465e-16, -1, 0, 0);
+    transition: all 0.2s ease-in 0s;
+}
+.search-focus-wap .search-focus-wap-div2 {
+    position: absolute;
+    z-index: 2;
+    top: 47px;
+    left: -1px;
+    text-decoration: none solid rgb(51, 51, 51);
+    transition: all 0.2s ease 0s;
+}
+.search-focus-wap .search-focus-wap-div3 {
+    z-index: 2;
+    top: 0px;
+    left: 33px;
+}
+.search-focus-wap .search-focus-wap-span3 {
+    top: 0px;
+    border-bottom: 8px solid rgb(216, 216, 216);
+}
+.search-focus-wap .search-focus-wap-span4 {
+    top: 1px;
+    border-bottom: 8px solid rgb(255, 255, 255);
+}
+.search-focus-wap .search-focus-wap-ul1 {
+    width: 80px;
+    top: 8px;
+    left: -1px;
+    background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box;
+    margin: 0px;
+    padding: 0px;
+    border: 1px solid rgb(216, 216, 216);
+    border-radius: 2px;
+    list-style: none outside none;
+}
+.search-focus-wap .search-focus-wap-li1 {
+    display: none;
+    width: auto;
+    border-bottom: 1px solid rgb(238, 238, 238);
+}
+.search-focus-wap .search-focus-wap-li2 {
+    border-bottom: 1px solid rgb(238, 238, 238);
+}
+.search-focus-wap .search-focus-wap-input1 {
+    width: 100%;
+    height: 100%;
+    background: rgb(248, 248, 248) none repeat scroll 0% 0% / auto padding-box border-box;
+    padding: 0px;
+    border: 0px none rgb(51, 51, 51);
+    box-sizing: border-box;
+    outline: rgb(51, 51, 51) none 0px;
+    cursor: text;
+    font: normal normal 400 normal 16px / normal "PingFang SC", Arial, 微软雅黑, Helvetica, sans-serif;
+    text-decoration: none solid rgb(51, 51, 51);
+    vertical-align: middle;
+}
+.search-focus-wap .search-focus-wap-div4 {
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: 0px;
+    right: 35px;
+    background: rgba(0, 0, 0, 0) url("https://t1.focus-res.cn/front-h5/module/header-search-overlay/img/delete.png?20180103154306") no-repeat scroll 50% 50% / 17px 17px padding-box border-box;
+    padding: 14px 10px;
+    text-decoration: none solid rgb(51, 51, 51);
+}
+.search-focus-wap .search-focus-wap-div5 {
+    position: absolute;
+    width: 34px;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    background: rgba(0, 0, 0, 0) url("https://t1.focus-res.cn/front-h5/module/header-search-overlay/img/icon-search.png?20180103154306") no-repeat scroll 50% 50% / 14px 15px padding-box border-box;
+    border-left: 1px solid rgb(238, 238, 238);
+    text-decoration: none solid rgb(51, 51, 51);
+}
+.search-focus-wap .search-focus-wap-div2>* {
+    position: absolute;
+    text-decoration: none solid rgb(51, 51, 51);
+}
+.search-focus-wap .search-focus-wap-div3>* {
+    display: block;
+    position: absolute;
+    left: 0px;
+    border-right: 8px dashed rgba(0, 0, 0, 0);
+    border-left: 8px dashed rgba(0, 0, 0, 0);
+    text-decoration: none solid rgb(51, 51, 51);
+}
+.search-focus-wap .search-focus-wap-ul1>* {
+    height: 36px;
+    background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box;
+    color: rgb(102, 102, 102);
+    text-align: center;
+    font: normal normal 400 normal 15px / 36px "PingFang SC", Arial, 微软雅黑, Helvetica, sans-serif;
+    text-decoration: none solid rgb(102, 102, 102);
+}
