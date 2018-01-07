@@ -1,0 +1,64 @@
+.timeline1-focus {
+    position: relative;
+    border-collapse: separate;
+    border-spacing: 0px 0px;
+    color: rgb(51, 51, 51);
+    text-align: left;
+    text-indent: 0px;
+    cursor: auto;
+    font: normal normal 400 normal 12px / 21px Helvetica, Tahoma, Arial, "PingFang SC", "Microsoft YaHei", 微软雅黑;
+    letter-spacing: normal;
+    list-style: disc outside none;
+    visibility: visible;
+    text-decoration: none solid rgb(51, 51, 51);
+    white-space: normal;
+    word-break: normal;
+    word-wrap: normal;
+    overflow: hidden;
+}
+.timeline1-focus .timeline1-focus-div2 {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    top: 25px;
+    left: 6px;
+    background: rgb(238, 238, 238) none repeat scroll 0% 0% / auto padding-box border-box;
+    text-decoration: none solid rgb(51, 51, 51);
+}
+.timeline1-focus .timeline1-focus-div3 {
+    position: relative;
+    margin: 20px 0px 0px;
+    padding: 0px 0px 0px 33px;
+    text-decoration: none solid rgb(51, 51, 51);
+}
+.timeline1-focus .timeline1-focus-div4 {
+    margin: 16px 0px 6px -33px;
+    color: rgb(153, 153, 153);
+    text-decoration: none solid rgb(153, 153, 153);
+}
+.timeline1-focus .timeline1-focus-span1 {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background: rgba(0, 0, 0, 0) url("http://t1.focus-res.cn/broker/pc-res/module/broker-timeaxis/img/timepoint-rec.png?1506593145669") repeat scroll 50% 50% / auto padding-box border-box;
+    text-decoration: none solid rgb(153, 153, 153);
+    vertical-align: middle;
+}
+.timeline1-focus .timeline1-focus-span2 {
+    margin: 0px 0px 0px 20px;
+    text-decoration: none solid rgb(153, 153, 153);
+}
+.timeline1-focus .timeline1-focus-div5 {
+    color: rgb(102, 102, 102);
+    font: normal normal 400 normal 14px / 22px Helvetica, Tahoma, Arial, "PingFang SC", "Microsoft YaHei", 微软雅黑;
+    text-decoration: none solid rgb(102, 102, 102);
+    word-break: break-all;
+}
+.timeline1-focus .timeline1-focus-span3 {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background: rgba(0, 0, 0, 0) url("http://t1.focus-res.cn/broker/pc-res/module/broker-timeaxis/img/timepoint-his.png?1506593145669") repeat scroll 50% 50% / auto padding-box border-box;
+    text-decoration: none solid rgb(153, 153, 153);
+    vertical-align: middle;
+}
