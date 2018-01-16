@@ -17,9 +17,13 @@ const render = data => {
                 // `operation` can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
                 // in case of 'rename_node' node_position is filled with the new node name
                 if (more && more.is_foreign) return false;
+                // if (operation === 'create_node') return false;
                 if (['rename_node', 'delete_node', 'move_node', 'copy_node', 'edit'].includes(operation) &&
                     node.data && node.data.isSlot) return false;
                 if (node_parent.data && node_parent.data.type === 'slotter' && !(node.data && node.data.isSlot))
+                    return false;
+                if (node_parent.id === '#') return true;
+                if (node_parent.data && (node_parent.data.type !== 'slotter' && !node_parent.data.isSlot))
                     return false;
                 return true;
             }
@@ -92,6 +96,7 @@ const init = function (el) {
                 });
             });
         }
+        document.dispatchEvent(new CustomEvent(`preview-update`));
         return true;
     });
 };

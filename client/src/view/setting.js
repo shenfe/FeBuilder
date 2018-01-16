@@ -10,7 +10,6 @@ const converter = varObj => {
         if (!varObj.hasOwnProperty(p)) continue;
         re[p] = varObj[p].value;
     }
-    debugger
     return re;
 };
 

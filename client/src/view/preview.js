@@ -12,7 +12,11 @@ const targetSelector = '#preview-inner';
 
 const vte = require('velocity-template-engine');
 
-const update = async _ => {
+const updateLast = {
+    style: '',
+    body: ''
+};
+const update = async useLastData => {
     const iframeStyle = {};
     switch (curDevice) {
         case 'mobile':
@@ -27,16 +31,34 @@ const update = async _ => {
         default:
             break;
     }
-    let { style, html } = await vTree.html();
     let iframe = document.createElement('iframe');
-    iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(
-        vte.render(presetDevices[curDevice], {
+
+    if (!useLastData) {
+        let { style, html } = await vTree.html();
+        Object.assign(updateLast, {
             style: __project.style + style,
             body: html
-        })
-    );
+        });
+    }
+
+    iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(vte.render(presetDevices[curDevice], updateLast));
     $(iframe).css(iframeStyle);
     $(targetSelector).empty().append(iframe);
+};
+
+const highlight = selector => {
+    updateLast.body += `<script>
+        window.onload = function () {
+            let target = document.querySelector('${selector}');
+            if (!target) return;
+            target.style.backgroundColor = 'lightblue';
+            target.scrollIntoView();
+            setTimeout(function () {
+                target.style.cssText = '';
+            }, 1000);
+        };
+    </script>`;
+    update(true);
 };
 
 window.previewHtml = update;
@@ -48,6 +70,11 @@ let curDevice;
 
 const init = function (el) {
     target = el;
+
+    document.addEventListener(`treenode-select`, function (e) {
+        let data = e.detail;
+        highlight(`[fb_id="${data['_id']}"]`);
+    });
 
     if (controller.checkStatus()) {
         get('presetdevices').then(data => {
@@ -74,6 +101,7 @@ const init = function (el) {
     });
 
     document.addEventListener('preview-update', function (e) {
+        console.log('preview updating...');
         update();
     });
 

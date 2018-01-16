@@ -37,6 +37,7 @@ const input = inputs => {
 
 const copyNodeData = (fromtree, from, totree, to, recurse) => {
     to.data = $.extend(true, {}, from.data);
+    to.data['_id'] = '' + Date.now() + '_' + (Math.ceil(Math.random() * 10000)); // realloc id
     if (from && from.children_d && recurse) {
         for (let i = 0, j = from.children_d.length; i < j; i++) {
             copyNodeData(fromtree, fromtree.get_node(from.children_d[i]), totree, totree.get_node(to.children_d[i]), recurse);

@@ -479,6 +479,11 @@ router.post(API.apis.html, function (ctx, next) {
                     text: '<slot>body</slot>'
                 }
             ]
+        }, function ({ html, style }, node) {
+            return {
+                html: node['_id'] ? html.replace(/<([0-9a-zA-Z$_-]+)/, function (p0) { return p0 + ` fb_id="${node['_id']}"` }) : html,
+                style
+            };
         })
     };
 });
