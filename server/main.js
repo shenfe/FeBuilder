@@ -480,6 +480,7 @@ router.post(API.apis.html, function (ctx, next) {
                 }
             ]
         }, function ({ html, style }, node) {
+            console.log('node', node);
             return {
                 html: node['_id'] ? html.replace(/<([0-9a-zA-Z$_-]+)/, function (p0) { return p0 + ` fb_id="${node['_id']}"` }) : html,
                 style

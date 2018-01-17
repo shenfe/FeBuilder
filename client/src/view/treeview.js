@@ -88,6 +88,7 @@ const init = function (el) {
                 data.instance.create_node(data.node, {
                     text: `[${slot.name}]`,
                     data: {
+                        ['_id']: slot['_id'] || helper.genId(),
                         isSlot: true,
                         name: slot.name,
                         text: slot.text,
