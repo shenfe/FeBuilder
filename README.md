@@ -7,13 +7,13 @@ A frontend building tool.
 ### run the server
 
 ```
-npm run serve
+$ npm run serve
 ```
 
 ### build the frontend
 
 ```
-npm run build
+$ npm run build
 ```
 
 ## License
